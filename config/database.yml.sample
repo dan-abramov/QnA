@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: thinknetica-advanced_development
+
+test:
+  <<: *default
+  database: thinknetica-advanced_test
+
+production:
+  <<: *default
+  database: thinknetica-advanced_production
+  username: dan
+  password: <%= ENV['THINKNETICA-ADVANCED_DATABASE_PASSWORD'] %>
