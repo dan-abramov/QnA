@@ -1,4 +1,17 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'shoulda-matchers'
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    require 'active_record'
+    require 'action_controller'
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
+
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)

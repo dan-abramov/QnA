@@ -29,11 +29,15 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'rubocop'
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
 
+group :test do
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
