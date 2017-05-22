@@ -1,10 +1,10 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'shoulda-matchers'
+require 'active_record'
+require 'action_controller'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
-    require 'active_record'
-    require 'action_controller'
     with.test_framework :rspec
     with.library :rails
   end
