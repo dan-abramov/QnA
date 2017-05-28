@@ -235,6 +235,7 @@ DEPENDENCIES
   factory_girl_rails
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
+  minitest (= 5.10.2)
   pg (~> 0.18)
   puma (~> 3.7)
   rails (~> 5.1.1)

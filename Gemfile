@@ -30,8 +30,13 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails'
+
 gem 'rubocop'
+
 gem 'rails-controller-testing'
+
+gem 'minitest', '5.10.2'
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
