@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :load_question, only:[:new, :create]
+  before_action :load_question, only: [:new, :create]
 
   def new
     @answer = @question.answers.new
