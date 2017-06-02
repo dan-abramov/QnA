@@ -18,8 +18,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-
+    @answer = @question.answers.find(params[:id])
+    @answer.destroy
+    redirect_to question_path(@question)
   end
+
   private
 
   def load_question
