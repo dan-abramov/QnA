@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
@@ -108,8 +110,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq 'Question title'
+        expect(question.body).to eq 'Question body'
       end
 
       it 're-renders edit view' do

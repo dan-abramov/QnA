@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 FactoryGirl.define do
   factory :answer do
-    body 'MyText'
+    body 'Answer body'
     question
+    user
   end
 
   factory :invalid_answer, class: Answer do

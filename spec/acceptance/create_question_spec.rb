@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Create question', %q{
+feature 'Create question', '
   In order to get answer from community
   As an authenticated user
   I want to be able to ask questions
-} do
+' do
 
   given(:user) { create(:user) }
 
@@ -13,11 +15,11 @@ feature 'Create question', %q{
 
     visit questions_path
     click_on 'Ask question'
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body',  with: 'text text'
+    fill_in  'Title', with: 'Test question'
+    fill_in  'Body',  with: 'text text'
     click_on 'Create'
 
-    expect(page).to have_content ''
+    expect(page).to have_content 'Your question successfully created.'
   end
 
   scenario 'Non-authenticated user ties to create question' do
