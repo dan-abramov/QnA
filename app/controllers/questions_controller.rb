@@ -38,8 +38,13 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if @question.user_id == current_user.id
+      @question.destroy
+      redirect_to questions_path
+    else
+      flash[:notice] = 'You can not delete this question'
+      redirect_to questions_path
+    end
   end
 
   private

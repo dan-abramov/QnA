@@ -15,6 +15,9 @@ feature 'Delete question', '
     question
     visit questions_path
     click_on 'delete question'
+
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
   end
 
   scenario 'User2 try to delete question of User1' do

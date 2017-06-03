@@ -19,8 +19,13 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer = @question.answers.find(params[:id])
-    @answer.destroy
-    redirect_to question_path(@question)
+    if @answer.user_id == current_user.id
+      @answer.destroy
+      redirect_to question_path(@question)
+    else
+      flash[:notice] = 'You can not delete this answer'
+      redirect_to question_path(@question)
+    end
   end
 
   private

@@ -16,10 +16,12 @@ feature 'Answer on question', '
     expect(page).to have_content question.title
     expect(page).to have_content question.body
 
-    fill_in  'Answer',  with: 'test'
+    fill_in  'Answer',  with: answer[:body]
     click_on 'Create'
 
     expect(page).to have_content 'Your answer successfully created.'
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).to have_content answer.body
   end
-
 end
