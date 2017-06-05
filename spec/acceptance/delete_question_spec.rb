@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Delete question', '
@@ -26,5 +28,4 @@ feature 'Delete question', '
     visit questions_path
     expect(page).to_not have_link 'delete question'
   end
-
 end

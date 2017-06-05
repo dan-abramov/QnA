@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question
 
-
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user_id = current_user.id

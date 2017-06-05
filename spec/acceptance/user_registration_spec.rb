@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'User registration', '
@@ -9,7 +11,6 @@ feature 'User registration', '
     visit root_path
     click_on 'Sign up'
     visit new_user_registration_path
-
 
     fill_in 'Email',                       with: 'some@email.com'
     fill_in 'user[password]',              with: '12345678'

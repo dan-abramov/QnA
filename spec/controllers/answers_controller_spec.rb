@@ -41,7 +41,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'answer of user' do
       it 'deletes the answer' do
         expect { delete :destroy, params: { question_id: question, id: answer } }
-        .to change(Answer, :count).by(-1)
+          .to change(Answer, :count).by(-1)
       end
 
       it 'redirects to queston' do
@@ -51,11 +51,11 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'answer of somebody' do
-      let(:answer)   { create(:answer, question: question) }
+      let(:answer) { create(:answer, question: question) }
 
       it 'does not delete the answer' do
         expect { delete :destroy, params: { question_id: question, id: answer } }
-        .to_not change(Answer, :count)
+          .to_not change(Answer, :count)
       end
 
       it 'redirects to queston' do

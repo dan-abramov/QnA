@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Answer on question', '
@@ -16,7 +18,7 @@ feature 'Answer on question', '
     expect(page).to have_content question.title
     expect(page).to have_content question.body
 
-    fill_in  'Answer',  with: answer[:body]
+    fill_in  'Answer', with: answer[:body]
     click_on 'Create'
 
     expect(page).to have_content 'Your answer successfully created.'

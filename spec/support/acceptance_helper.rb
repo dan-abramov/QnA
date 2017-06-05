@@ -8,7 +8,7 @@ module AcceptanceHelper
     click_on 'Log in'
   end
 
-  def sign_out(user)
+  def sign_out(_user)
     visit questions_path
     click_on 'Sign out'
   end
