@@ -4,12 +4,13 @@
 <br>
 
 .answers
-- if @question.answers.any?
+ - if @question.answers.any?
   = render 'answers/answers'
-- else
+ - else  
   = '(Here is no comments)'
+  
 - if user_signed_in?
-  = render 'answers/form'
+ = render 'answers/form'
   
 - if user_signed_in?
   p= link_to 'Sign out', destroy_user_session_path,
