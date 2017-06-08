@@ -2,6 +2,8 @@
 <br>
 = @question.body
 <br>
+
+.answers
 - if @question.answers.any?
   = render 'answers/answers'
 - else

@@ -40,6 +40,10 @@ gem 'minitest', '5.10.2'
 
 gem 'devise'
 
+gem 'jquery-ui-rails'
+
+gem 'jquery-rails'
+
 group :test, :development do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
