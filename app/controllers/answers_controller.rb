@@ -14,10 +14,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.find(params[:id])
     if @answer.user_id == current_user.id
       @answer.destroy
-      redirect_to question_path(@question)
+      redirect_to @question
     else
       flash[:notice] = 'You can not delete this answer'
-      redirect_to question_path(@question)
+      redirect_to @question
     end
   end
 
