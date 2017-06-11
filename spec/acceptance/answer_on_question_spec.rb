@@ -11,7 +11,7 @@ feature 'Answer on question', '
   given(:question) { create(:question) }
   given(:answer)   { create(:answer) }
 
-  scenario 'Authenticated user answer on a question', js:true do
+  scenario 'Authenticated user answer on a question', js: true do
     sign_in(user)
     visit question_path(question)
 

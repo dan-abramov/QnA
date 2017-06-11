@@ -45,9 +45,9 @@ gem 'jquery-ui-rails'
 gem 'jquery-rails'
 
 group :test, :development do
+  gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
-  gem 'database_cleaner'
 end
 
 group :test do
