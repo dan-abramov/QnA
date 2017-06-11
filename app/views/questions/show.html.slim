@@ -1,13 +1,21 @@
-= @question.title
-<br>
-= @question.body
-<br>
-- if @question.answers.any?
+h3 
+  = @question.title
+  <br>
+h4 
+  = @question.body
+  <br>
+
+.answers
+ - if @question.answers.any?
   = render 'answers/answers'
-- else
-  = '(Here is no comments)'
+ - else  
+  .no-answers
+    = '(Here is no answers)' 
+    
+
+  
 - if user_signed_in?
-  = render 'answers/form'
+ = render 'answers/form'
   
 - if user_signed_in?
   p= link_to 'Sign out', destroy_user_session_path,

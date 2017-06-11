@@ -1,0 +1,4 @@
+$('.answers').children('.no-answers').empty()
+$('.answers').append('<%= j render @answer %>');
+$('.answers').append('<br>')
+$('#answer_body').val('')

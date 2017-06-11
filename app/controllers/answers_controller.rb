@@ -7,23 +7,17 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user_id = current_user.id
-    if @answer.save
-      flash[:notice] = 'Your answer successfully created.'
-      redirect_to question_path(@question)
-    else
-      flash[:notice] = 'Something goes wrong, please, try again.'
-      redirect_to question_path(@question)
-    end
+    @answer.save
   end
 
   def destroy
     @answer = @question.answers.find(params[:id])
     if @answer.user_id == current_user.id
       @answer.destroy
-      redirect_to question_path(@question)
+      redirect_to @question
     else
       flash[:notice] = 'You can not delete this answer'
-      redirect_to question_path(@question)
+      redirect_to @question
     end
   end
 
