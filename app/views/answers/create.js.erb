@@ -1,4 +1,10 @@
-$('.answers').children('.no-answers').remove()
-$('.answers').append('<%= j render @answer %>');
-$('.answers').append('<br>')
-$('#answer_body').val('')
+<% if @answer.errors.present? %>
+  <% @answer.errors.full_messages.each do |message| %>
+    $('.answer-errors').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('.answers').children('.no-answers').remove()
+  $('.answers').append('<%= j render @answer %>');
+  $('.answers').append('<br>')
+  $('#answer_body').val('')
+<% end %>
