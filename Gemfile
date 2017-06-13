@@ -44,12 +44,6 @@ gem 'jquery-ui-rails'
 
 gem 'jquery-rails'
 
-group :test, :development do
-  gem 'database_cleaner'
-  gem 'factory_girl_rails'
-  gem 'rspec-rails'
-end
-
 group :test do
   gem 'capybara'
   gem 'launchy'
@@ -62,7 +56,10 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Adds support for Capybara system testing and selenium driver
-  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
+  gem 'capybara-webkit'
 end
 
 group :development do

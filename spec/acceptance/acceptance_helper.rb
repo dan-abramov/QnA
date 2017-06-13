@@ -1,7 +1,10 @@
 require_relative '../rails_helper'
 
 RSpec.configure do |config|
+  Capybara.javascript_driver = :webkit
+
   config.extend  ControllerMacros,    type: :controller
+
   config.use_transactional_fixtures = true
 
   config.before(:suite) do
