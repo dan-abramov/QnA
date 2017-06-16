@@ -10,6 +10,16 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
+  def update
+    @answer = Answer.find(params[:id])
+    if current_user.id == @answer.user_id
+      @answer.update(answer_params)
+      @question = @answer.question
+    else
+      redirect_to @question
+    end
+  end
+
   def destroy
     @answer = @question.answers.find(params[:id])
     if @answer.user_id == current_user.id
