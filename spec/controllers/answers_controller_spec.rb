@@ -27,7 +27,7 @@ RSpec.describe AnswersController, type: :controller do
           .to_not change(Answer, :count)
       end
 
-      it 'render create tamplate' do
+      it 'render create template' do
         post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js }
         expect(response).to render_template :create
       end
@@ -40,13 +40,13 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'answer of user' do
       it 'deletes the answer' do
-        expect { delete :destroy, params: { question_id: question, id: answer } }
+        expect { delete :destroy, params: { question_id: question, id: answer, format: :js } }
           .to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to question' do
-        delete :destroy, params: { question_id: question, id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'render destroy template' do
+        delete :destroy, params: { question_id: question, id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
 
@@ -54,12 +54,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:answer) { create(:answer, question: question) }
 
       it 'does not delete the answer' do
-        expect { delete :destroy, params: { question_id: question, id: answer } }.to_not change(Answer, :count)
-      end
-
-      it 'redirects to question' do
-        delete :destroy, params: { question_id: question, id: answer }
-        expect(response).to redirect_to question_path(question)
+        expect { delete :destroy, params: { question_id: question, id: answer, format: :js } }.to_not change(Answer, :count)
       end
     end
   end
@@ -88,19 +83,5 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
-
-    # context 'invalid attributes' do
-    #   before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
-    #
-    #   it 'does not change question attributes' do
-    #     question.reload
-    #     expect(question.title).to eq 'Question title'
-    #     expect(question.body).to eq 'Question body'
-    #   end
-    #
-    #   it 're-renders edit view' do
-    #     expect(response).to render_template :edit
-    #   end
-    # end
   end
 end

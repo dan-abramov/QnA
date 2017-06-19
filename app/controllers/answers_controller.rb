@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
       @answer.update(answer_params)
       @question = @answer.question
     else
-      redirect_to @question
+      flash[:notice] = 'You can not update this answer'
     end
   end
 
@@ -24,10 +24,8 @@ class AnswersController < ApplicationController
     @answer = @question.answers.find(params[:id])
     if @answer.user_id == current_user.id
       @answer.destroy
-      redirect_to @question
     else
       flash[:notice] = 'You can not delete this answer'
-      redirect_to @question
     end
   end
 
