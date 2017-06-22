@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require_relative 'models_helper'
 
 RSpec.describe User do
   it { should validate_presence_of :email }

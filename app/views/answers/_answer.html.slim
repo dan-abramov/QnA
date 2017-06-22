@@ -1,3 +1,8 @@
-= answer.body
-p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-p= link_to 'delete answer', question_answer_path(@question, answer), method: :delete
+p
+  p= answer.body
+  = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+  | &nbsp;
+  = link_to 'delete answer', question_answer_path(@question, @answer), remote: true, method: :delete
+  | &nbsp;
+  - if @question.user_id == current_user.id
+    = link_to 'choose as best answer', question_answer_set_best_path(@question, @answer), remote: true, method: :patch

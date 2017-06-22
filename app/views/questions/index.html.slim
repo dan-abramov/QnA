@@ -1,6 +1,7 @@
 h3
-  - @questions.each do |question| 
+  - @questions.each do |question|
     = link_to question.title, question
+    | &nbsp;
     - if user_signed_in? && question.user_id == current_user.id
       = link_to 'delete question', question_path(question),
       data: { method: :delete, confirm: "Are you sure?" }
