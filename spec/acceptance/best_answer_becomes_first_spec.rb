@@ -8,15 +8,12 @@ feature 'best answer become first', '
   given(:user)      { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer1)  { create(:answer, question: question) }
-  given!(:answer2)  { create(:answer, question: question) }
+  given!(:answer2)  { create(:answer, question: question, best:true) }
 
   scenario 'After choosing as best answer becomes first', js:true do
     sign_in(user)
     visit question_path(question)
-    within(".answer-#{answer2.id}") do
-      click_on 'choose as best answer'
-    end
-    sleep(1)
-    Answer.order(best: :desc).all.should == [answer2, answer1]
+    first_answer = find(:xpath, './/div[@class="answers"]/div[1]')
+    expect(first_answer[:class]).to eq "answer-2"
   end
 end
