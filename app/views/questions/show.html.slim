@@ -4,6 +4,10 @@ h3
 h4
   = @question.body
   <br>
+p Attachment
+ul
+  - @question.attachments.each do |a|
+    li= link_to a.file.filename, a.file.url
 
 .answers
  - if @question.answers.any?

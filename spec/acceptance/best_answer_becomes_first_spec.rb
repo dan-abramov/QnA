@@ -14,6 +14,6 @@ feature 'best answer become first', '
     sign_in(user)
     visit question_path(question)
     first_answer = find(:xpath, './/div[@class="answers"]/div[1]')
-    expect(first_answer[:class]).to eq "answer-2"
+    expect(first_answer[:class]).to eq "answer-#{answer2.id}"
   end
 end
