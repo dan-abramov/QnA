@@ -3,7 +3,6 @@
     $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').children('.no-answers').remove()
-  $('.answers').append('<%= j render @answer %>');
-  $('#answer_body').val('')
+  $('#answer<%= @answer.id %>').remove();
+  $('.answers').html("<%= j render 'answers' %>");
 <% end %>

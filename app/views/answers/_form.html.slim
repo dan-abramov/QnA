@@ -1,4 +1,6 @@
 = form_for([@question, Answer.new], remote: true) do |a|
- = a.label :body, 'Answer:'
- = a.text_area :body
- = a.submit 'Create'
+  p
+   = a.label :body, 'Answer:'
+   .answer-errors
+   = a.text_area :body
+  p= a.submit 'Create'

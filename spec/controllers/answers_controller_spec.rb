@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require_relative 'controller_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
@@ -27,12 +27,76 @@ RSpec.describe AnswersController, type: :controller do
           .to_not change(Answer, :count)
       end
 
-      it 'render create tamplate' do
+      it 'render create template' do
         post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js }
         expect(response).to render_template :create
       end
     end
   end
+
+  describe 'PATCH #update' do
+    sign_in_user
+    context 'valid attributes' do
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'assigns the requested question to @question' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question attributes' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' },  user: @user, format: :js }
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'render update template to update answer' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer),  user: @user, format: :js }
+        expect(response).to render_template :update
+      end
+    end
+  end
+
+  describe 'PATCH #set_best' do
+    sign_in_user
+
+    context 'author of question' do
+      let(:question) { create(:question, user: @user) }
+
+      it 'assigns the requested answer to @answer' do
+        patch :set_best, params: { answer_id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'setting answer as best' do
+        expect(answer.best).to eq false
+        patch :set_best, params: { answer_id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+        answer.reload
+        expect(answer.best).to eq true
+      end
+
+      it 'render update template' do
+        patch :set_best, params: { answer_id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+        expect(response).to render_template :set_best
+      end
+    end
+
+    context 'not a author of question' do
+      let(:user2)    { create(:user) }
+      let(:question) { create(:question, user: user2) }
+
+       it 'can not set answer as best' do
+         expect(answer.best).to eq false
+         patch :set_best, params: { answer_id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+         answer.reload
+         expect(answer.best).to eq false
+       end
+    end
+  end
+
 
   describe 'DELETE #destroy' do
     sign_in_user
@@ -40,13 +104,13 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'answer of user' do
       it 'deletes the answer' do
-        expect { delete :destroy, params: { question_id: question, id: answer } }
+        expect { delete :destroy, params: { question_id: question, id: answer, format: :js } }
           .to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to question' do
-        delete :destroy, params: { question_id: question, id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'render destroy template' do
+        delete :destroy, params: { question_id: question, id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
 
@@ -54,13 +118,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:answer) { create(:answer, question: question) }
 
       it 'does not delete the answer' do
-        expect { delete :destroy, params: { question_id: question, id: answer } }
-          .to_not change(Answer, :count)
-      end
-
-      it 'redirects to question' do
-        delete :destroy, params: { question_id: question, id: answer }
-        expect(response).to redirect_to question_path(question)
+        expect { delete :destroy, params: { question_id: question, id: answer, format: :js } }.to_not change(Answer, :count)
       end
     end
   end

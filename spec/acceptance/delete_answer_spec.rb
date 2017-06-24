@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Delete answer', '
   As user
@@ -13,7 +13,7 @@ feature 'Delete answer', '
   given(:question) { create(:question) }
   given(:answer)   { create(:answer, question: question, user: user1) }
 
-  scenario 'User1 is deleting his answer' do
+  scenario 'User1 is deleting his answer', js: true do
     sign_in(user1)
     answer
     visit question_path(question)
@@ -21,7 +21,7 @@ feature 'Delete answer', '
     expect(page).to_not have_content answer.body
   end
 
-  scenario 'User2 can not delete answer of User1' do
+  scenario 'User2 can not delete answer of User1', js: true do
     sign_in(user2)
     answer
     visit question_path(question)

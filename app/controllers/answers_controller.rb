@@ -10,14 +10,31 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
+  def update
+    @answer = Answer.find(params[:id])
+    if current_user.id == @answer.user_id
+      @answer.update(answer_params)
+      @question = @answer.question
+    else
+      flash[:notice] = 'You can not update this answer'
+    end
+  end
+
+  def set_best
+    @answer = Answer.find(params[:answer_id])
+    if current_user.id == @answer.question.user_id
+      @answer.set_best
+    else
+      flash[:notice] = 'You can not set best answer'
+    end
+  end
+
   def destroy
     @answer = @question.answers.find(params[:id])
     if @answer.user_id == current_user.id
       @answer.destroy
-      redirect_to @question
     else
       flash[:notice] = 'You can not delete this answer'
-      redirect_to @question
     end
   end
 

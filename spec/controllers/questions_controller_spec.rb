@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require_relative 'controller_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
