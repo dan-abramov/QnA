@@ -11,6 +11,9 @@
         = link_to 'choose as best answer', question_answer_set_best_path(@question, answer), remote: true, method: :patch
       - else
         | This is the best answer!
+      ul
+        - answer.attachments.each do |a|
+          li= link_to a.file.filename, a.file.url
 
         p
           = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|

@@ -18,7 +18,7 @@ feature 'Add files to qusetion', '
     fill_in  'Body',  with: 'Another text'
     attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
     click_on 'Create'
-
+    save_and_open_page
     expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/1/rails_helper.rb'
   end
 end

@@ -6,3 +6,6 @@ p
   | &nbsp;
   - if @question.user_id == current_user.id
     = link_to 'choose as best answer', question_answer_set_best_path(@question, @answer), remote: true, method: :patch
+  ul
+    - @answer.attachments.each do |a|
+      li= link_to a.file.filename, a.file.url

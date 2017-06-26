@@ -31,7 +31,8 @@ ActiveRecord::Schema.define(version: 20170624193145) do
     t.datetime "updated_at", null: false
     t.integer "attachable_id"
     t.string "attachable_type"
-    t.index ["attachable_id", "attachable_type"], name: "index_attachments_on_attachable_id_and_attachable_type"
+    t.index ["attachable_id"], name: "index_attachments_on_attachable_id"
+    t.index ["attachable_type"], name: "index_attachments_on_attachable_type"
   end
 
   create_table "questions", force: :cascade do |t|
