@@ -38,6 +38,8 @@ gem 'devise'
 gem 'jquery-ui-rails'
 gem 'jquery-rails'
 gem 'carrierwave'
+gem 'cocoon'
+gem 'remotipart'
 
 group :test do
   gem 'capybara'

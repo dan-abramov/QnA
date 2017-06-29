@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       patch :set_best
     end
   end
-
+  resources :attachments, only: [:destroy]
   root to: 'questions#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
