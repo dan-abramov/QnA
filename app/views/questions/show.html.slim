@@ -9,7 +9,7 @@ ul
   - @question.attachments.each do |a|
     li id="attach-#{a.id}"
       = link_to a.file.filename, a.file.url
-      - if user_signed_in? && @question.user_id == current_user.id
+      - if user_signed_in? && current_user.author_of?(@question)
         = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
 
 .answers
