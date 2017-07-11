@@ -9,14 +9,31 @@
         | &nbsp;
       - if user_signed_in? && current_user.author_of?(answer.question) && answer.best == false
         = link_to 'choose as best answer', question_answer_set_best_path(@question, answer), remote: true, method: :patch
-      - else
+      - if answer.best == true
         | This is the best answer!
+
       ul
         - answer.attachments.each do |a|
           li id="attach-#{a.id}"
             = link_to a.file.filename, a.file.url
             - if user_signed_in? && current_user.author_of?(answer)
               = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
+
+      - if user_signed_in? && !current_user.author_of?(answer)
+        .rating
+          = 'answer rating:'
+          div class="answer-#{answer.id}-rating"
+            = link_to '+', vote_up_question_answer_path(@question, answer), remote: true, data: { type: :json }, method: :post
+            = answer.rating
+            = link_to '-', vote_down_question_answer_path(@question, answer), remote: true, data: { type: :json }, method: :post
+            | &nbsp;
+            = link_to 'reset', vote_reset_question_answer_path(@question, answer), remote: true, data: { type: :json }, method: :delete
+      - if !user_signed_in? || current_user.author_of?(answer)
+        .rating
+          div class="answer-#{answer.id}-rating"
+            = 'answer rating:'
+            | &nbsp;
+            = answer.rating
 
         p
           = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|

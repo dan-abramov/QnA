@@ -12,9 +12,25 @@ ul
       - if user_signed_in? && current_user.author_of?(@question)
         = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
 
+- if user_signed_in? && !current_user.author_of?(@question)
+  .rating
+    = 'question rating:'
+    div class="question-#{@question.id}-rating"
+      = link_to '+', vote_up_question_path(@question), remote: true, data: { type: :json }, method: :post
+      = @question.rating
+      = link_to '-', vote_down_question_path(@question), remote: true, data: { type: :json }, method: :post
+      | &nbsp;
+      = link_to 'reset', vote_reset_question_path(@question), remote: true, data: { type: :json }, method: :delete
+- if !user_signed_in? || current_user.author_of?(@question)
+  .rating
+    = 'question rating:'
+    | &nbsp;
+    = @question.rating
+
 .answers
  - if @question.answers.any?
   = render 'answers/answers'
+    .answers-errors
  - else
   .no-answers
     = '(Here is no answers)'

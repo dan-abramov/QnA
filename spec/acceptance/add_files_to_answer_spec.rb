@@ -14,7 +14,7 @@ feature 'Add files to answer', '
     visit question_path(question)
   end
 
-  scenario 'User adds files when answer', js:true do
+  scenario 'User adds files to answer', js:true do
     fill_in  'Answer', with: 'Text of answer'
     click_on 'add file'
     within(:xpath, './/form[@class="new_answer"]/div[@id="attachments"]/div[@class="nested-fields"][1]') do

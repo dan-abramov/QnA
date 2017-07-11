@@ -5,6 +5,7 @@ class Answer < ApplicationRecord
   belongs_to :user
   has_many :attachments, as: :attachable, dependent: :destroy
   validates :body, presence: true
+  include Votable
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
