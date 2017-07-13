@@ -5,4 +5,4 @@ $ ->
   .bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
-      $('div.question-' + question['id'] + '-rating').append(value)
+      $('div.' + element['class'] + '-' + element['id'] + '-rating').append(value)
