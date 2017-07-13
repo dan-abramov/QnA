@@ -11,11 +11,11 @@ ready = ->
 
     $('.rating').bind 'ajax:success', (e, data, status, xhr) ->
       answer = $.parseJSON(xhr.responseText)
-      $('div.answer-' + answer['id'] + '-rating').html(answer['rating'])
+      $('div.answer-' + answer['answer_id'] + '-rating').html(JST["templates/voting"]({object: answer}))
     .bind 'ajax:error', (e, xhr, status, error) ->
       errors = $.parseJSON(xhr.responseText)
       $.each errors, (index, value) ->
-        $('.rating').append(value)
+        $('div.answer-' + answer['answer_id'] + '-rating').append(value)
 
 $(document).on('turbolinks:load', ready)
 $(document).on('page:load', ready)

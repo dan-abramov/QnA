@@ -15,3 +15,4 @@
 //= require cocoon
 //= require turbolinks
 //= require_tree .
+//= require skim

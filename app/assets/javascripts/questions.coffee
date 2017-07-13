@@ -4,8 +4,8 @@
 $ ->
   $('.rating').bind 'ajax:success', (e, data, status, xhr) ->
     question = $.parseJSON(xhr.responseText)
-    $('div.question-' + question['id'] + '-rating').html(question['rating'])
+    $('div.question-' + question['id'] + '-rating').html(JST["templates/voting"]({object: question}))
   .bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
-      $('.rating').append(value)
+      $('div.question-' + question['id'] + '-rating').append(value)

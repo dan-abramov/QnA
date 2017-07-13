@@ -160,9 +160,9 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
 
     context 'POST #vote_up' do
-      it 'assigns the requested question to @votabled' do
+      it 'assigns the requested question to @votable' do
         post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
-        expect(assigns(:votabled)).to eq question
+        expect(assigns(:votable)).to eq question
       end
 
       it 'is voting up to question (can not do it more than 1 time)' do
@@ -179,9 +179,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'POST #vote_down' do
-      it 'assigns the requested question to @votabled' do
+      it 'assigns the requested question to @votable' do
         post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
-        expect(assigns(:votabled)).to eq question
+        expect(assigns(:votable)).to eq question
       end
 
       it 'is voting down to question (can not do it more than 1 time)' do
@@ -198,9 +198,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'POST #vote_reset' do
-      it 'assigns the requested question to @votabled' do
+      it 'assigns the requested question to @votable' do
         post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
-        expect(assigns(:votabled)).to eq question
+        expect(assigns(:votable)).to eq question
       end
 
       it 'is voting up to question' do

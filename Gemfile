@@ -40,6 +40,10 @@ gem 'jquery-rails'
 gem 'carrierwave'
 gem 'cocoon'
 gem 'remotipart'
+gem 'execjs'
+gem 'skim'
+
+
 
 group :test do
   gem 'capybara'

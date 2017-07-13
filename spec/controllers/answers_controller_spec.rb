@@ -128,9 +128,9 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
 
     context 'POST #vote_up' do
-      it 'assigns the requested answer to @votabled' do
+      it 'assigns the requested answer to @votable' do
         post :vote_up, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :json }
-        expect(assigns(:votabled)).to eq answer
+        expect(assigns(:votable)).to eq answer
       end
 
 
@@ -148,9 +148,9 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'POST #vote_down' do
-      it 'assigns the requested answer to @votabled' do
+      it 'assigns the requested answer to @votable' do
         post :vote_down, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :json }
-        expect(assigns(:votabled)).to eq answer
+        expect(assigns(:votable)).to eq answer
       end
 
 
@@ -168,9 +168,9 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'POST #vote_reset' do
-      it 'assigns the requested answer to @votabled' do
+      it 'assigns the requested answer to @votable' do
         post :vote_reset, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :json }
-        expect(assigns(:votabled)).to eq answer
+        expect(assigns(:votable)).to eq answer
       end
 
       it 'is voting up to answer' do
