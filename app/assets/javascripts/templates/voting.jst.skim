@@ -9,11 +9,11 @@
     | reset
 
 - if @object.answer_id != null
-  a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@object.question_id}/answers/#{@object.answer_id}/vote_up" rel='nofollow'
+  a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@object.question_id}/answers/#{@object.id}/vote_up" rel='nofollow'
     | +
   = @object.rating
-  a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@object.question_id}/answers/#{@object.answer_id}/vote_down" rel='nofollow'
+  a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@object.question_id}/answers/#{@object.id}/vote_down" rel='nofollow'
     | -
   | &nbsp;
-  a.link data-method='delete' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@object.question_id}/answers/#{@object.answer_id}/vote_reset" rel='nofollow'
+  a.link data-method='delete' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@object.question_id}/answers/#{@object.id}/vote_reset" rel='nofollow'
     | reset

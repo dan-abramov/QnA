@@ -39,11 +39,11 @@ module Votabled
   def respond_to_json
     if @votable.class == Answer
       respond_to do |format|
-        format.json { render json: {question_id: @votable.question.id, answer_id: @votable.id, rating: @votable.rating}.to_json }
+        format.json { render json: {class: 'answer', question_id: @votable.question.id, id: @votable.id, rating: @votable.rating}.to_json }
       end
     elsif @votable.class == Question
       respond_to do |format|
-        format.json { render json: {id: @votable.id, answer_id: nil, rating: @votable.rating}.to_json }
+        format.json { render json: {class: 'question', id: @votable.id, answer_id: nil, rating: @votable.rating}.to_json }
       end
     end
   end
