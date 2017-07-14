@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170624193145) do
+ActiveRecord::Schema.define(version: 20170706123908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,8 +31,7 @@ ActiveRecord::Schema.define(version: 20170624193145) do
     t.datetime "updated_at", null: false
     t.integer "attachable_id"
     t.string "attachable_type"
-    t.index ["attachable_id"], name: "index_attachments_on_attachable_id"
-    t.index ["attachable_type"], name: "index_attachments_on_attachable_type"
+    t.index ["attachable_id", "attachable_type"], name: "index_attachments_on_attachable_id_and_attachable_type"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -61,5 +60,17 @@ ActiveRecord::Schema.define(version: 20170624193145) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "votable_id"
+    t.string "votable_type"
+    t.integer "value", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_votes_on_user_id"
+    t.index ["votable_id", "votable_type"], name: "index_votes_on_votable_id_and_votable_type"
+  end
+
   add_foreign_key "answers", "questions"
+  add_foreign_key "votes", "users"
 end

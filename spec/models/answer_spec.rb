@@ -14,6 +14,8 @@ RSpec.describe Answer, type: :model do
 
   it { should accept_nested_attributes_for :attachments }
 
+  it_behaves_like 'votable'
+
   describe 'set best:true to answer' do
     let!(:question)     { create(:question) }
     let!(:answer)       { create(:answer, question: question, best: false) }

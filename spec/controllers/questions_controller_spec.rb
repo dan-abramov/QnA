@@ -154,4 +154,87 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'User is voting for question of somebody' do
+    let!(:question) { create(:question) }
+    sign_in_user
+
+    context 'POST #vote_up' do
+      it 'assigns the requested question to @votable' do
+        post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
+        expect(assigns(:votable)).to eq question
+      end
+
+      it 'is voting up to question (can not do it more than 1 time)' do
+        post :vote_up, params: { id: question, format: :json}
+        post :vote_up, params: { id: question, format: :json}
+        expect(question.rating).to eq 1
+      end
+
+      it 'returns JSON parse' do
+        post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
+        json_parse = JSON.parse(response.body)
+        expect(json_parse['rating']).to eq(1)
+      end
+    end
+
+    context 'POST #vote_down' do
+      it 'assigns the requested question to @votable' do
+        post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
+        expect(assigns(:votable)).to eq question
+      end
+
+      it 'is voting down to question (can not do it more than 1 time)' do
+        post :vote_down, params: { id: question, format: :json}
+        post :vote_down, params: { id: question, format: :json}
+        expect(question.rating).to eq -1
+      end
+
+      it 'returns JSON parse' do
+        post :vote_down, params: { id: question, question: attributes_for(:question), format: :json }
+        json_parse = JSON.parse(response.body)
+        expect(json_parse['rating']).to eq(-1)
+      end
+    end
+
+    context 'POST #vote_reset' do
+      it 'assigns the requested question to @votable' do
+        post :vote_up, params: { id: question, question: attributes_for(:question), format: :json }
+        expect(assigns(:votable)).to eq question
+      end
+
+      it 'is voting up to question' do
+        post :vote_down,  params: { id: question, format: :json }
+        post :vote_reset, params: { id: question, format: :json }
+
+        expect(question.rating).to eq 0
+      end
+    end
+  end
+
+  describe 'Author can not vote for his question' do
+    sign_in_user
+    let!(:question) { create(:question, user: @user) }
+
+    context 'POST #vote_up' do
+      it 'trying to vote up his question' do
+        expect { post :vote_up, params: { id: question, format: :json } }.to change(Vote, :count).by(0)
+      end
+    end
+
+    context 'POST #vote_down' do
+      it 'trying to vote down his question' do
+        expect { post :vote_down, params: { id: question, format: :json } }.to change(Vote, :count).by(0)
+      end
+    end
+
+    context 'DELETE #vote_reset' do
+      it 'trying to reset his choice (which was not)' do
+        post :vote_down, params:  { id: question, format: :json }
+        expect(question.rating).to eq 0
+        delete :vote_reset, params: { id: question, format: :json }
+        expect(question.rating).to eq 0
+      end
+    end
+  end
 end
