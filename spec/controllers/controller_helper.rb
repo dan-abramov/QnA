@@ -3,6 +3,7 @@ require_relative '../rails_helper'
 RSpec.configure do |config|
 
   config.extend  ControllerMacros,    type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   config.use_transactional_fixtures = true
 
