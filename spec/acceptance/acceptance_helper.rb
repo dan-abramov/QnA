@@ -1,6 +1,7 @@
 require_relative '../rails_helper'
 
 RSpec.configure do |config|
+  Capybara.server = :puma
   Capybara.javascript_driver = :webkit
 
   config.include AcceptanceHelper, type: :feature

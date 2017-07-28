@@ -14,6 +14,12 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = @question.answers.build
+
+    gon.question_id     = @question.id
+    gon.user_signed_in  = user_signed_in?
+    if user_signed_in?
+      gon.current_user_id = current_user.id
+    end
   end
 
   def new
@@ -65,9 +71,15 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
+    renderer = ApplicationController.renderer.new
+    renderer.instance_variable_set(:@env, { "HTTP_HOST"=>"localhost:3000",
+                                            "HTTPS"=>"off",
+                                            "REQUEST_METHOD"=>"GET",
+                                            "SCRIPT_NAME"=>"",
+                                            "warden" => warden })
     ActionCable.server.broadcast(
     'questions',
-      ApplicationController.render(
+      renderer.render(
         partial: 'questions/question',
         locals:  { question: @question }
       )

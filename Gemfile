@@ -42,7 +42,7 @@ gem 'cocoon'
 gem 'remotipart'
 gem 'execjs'
 gem 'skim'
-
+gem 'gon'
 
 
 group :test do

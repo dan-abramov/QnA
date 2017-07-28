@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question
 
+  after_action  :publish_answer, only: %i[create]
+
   include Votabled
 
   def create
@@ -48,5 +50,23 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    renderer = ApplicationController.renderer.new
+    renderer.instance_variable_set(:@env, { "HTTP_HOST"=>"localhost:3000",
+                                            "HTTPS"=>"off",
+                                            "REQUEST_METHOD"=>"GET",
+                                            "SCRIPT_NAME"=>"",
+                                            "warden" => warden })
+    ActionCable.server.broadcast(
+    "questions/#{params[:question_id]}/answers",
+      renderer.render(
+        partial: 'answers/answer_json',
+        formats: :xml,
+        locals:  { answer: @answer }
+      )
+    )
   end
 end
