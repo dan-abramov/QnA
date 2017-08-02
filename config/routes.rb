@@ -11,15 +11,24 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :commentable do
+    member do
+      post :comment
+    end
+  end
+
   resources :questions do
     concerns :votable
+    concerns :commentable
 
-    resources :answers do
+    resources :answers, shallow: true do
       concerns :votable
+      concerns :commentable
 
       patch :set_best
     end
   end
+
   resources :attachments, only: [:destroy]
   root to: 'questions#index'
 

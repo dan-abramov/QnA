@@ -27,6 +27,13 @@ ul
     | &nbsp;
     = @question.rating
 
+/.question-comments
+/  ul
+/    - @question.comments.each do |comment|
+/      = comment.body
+/  - if user_signed_in?
+/    = form_for
+
 .answers
  - if @question.answers.any?
   = render 'answers/answers'

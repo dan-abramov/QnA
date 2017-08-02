@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
   after_action :publish_question, only: %i[create]
 
   include Votabled
+  include Commentabled
 
   def index
     @questions = Question.all
@@ -17,6 +18,7 @@ class QuestionsController < ApplicationController
 
     gon.question_id     = @question.id
     gon.user_signed_in  = user_signed_in?
+
     if user_signed_in?
       gon.current_user_id = current_user.id
     end

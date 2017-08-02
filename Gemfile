@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'sprockets'
 gem 'slim-rails'
 gem 'rubocop'
 gem 'rails-controller-testing'
@@ -43,7 +44,6 @@ gem 'remotipart'
 gem 'execjs'
 gem 'skim'
 gem 'gon'
-
 
 group :test do
   gem 'capybara'
