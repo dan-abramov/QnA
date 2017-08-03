@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
   after_action :publish_question, only: %i[create]
 
   include Votabled
-  include Commentabled
 
   def index
     @questions = Question.all

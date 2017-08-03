@@ -8,6 +8,12 @@ ready = ->
     answer_id = $(this).data('answerId')
     $('form#edit-answer-' + answer_id).show();
 
+  $('.add-comment-to-answer').click (e) ->
+    e.preventDefault();
+    $(this).hide();
+    answer_id = $(this).data('answerId')
+    $('form#new-comment-for-answer-' + answer_id).show();
+
 $(document).on('turbolinks:load', ready)
 $(document).on('page:load', ready)
 $(document).on('page:update', ready)

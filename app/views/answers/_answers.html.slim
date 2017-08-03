@@ -5,10 +5,10 @@
       - if user_signed_in? && current_user.author_of?(answer)
         = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
         | &nbsp;
-        = link_to 'delete answer', question_answer_path(@question, answer), remote: true, method: :delete
+        = link_to 'delete answer', answer_path(answer), remote: true, method: :delete
         | &nbsp;
       - if user_signed_in? && current_user.author_of?(answer.question) && answer.best == false
-        = link_to 'choose as best answer', question_answer_set_best_path(@question, answer), remote: true, method: :patch
+        = link_to 'choose as best answer', answer_set_best_path(@answer), remote: true, method: :patch
       - if answer.best
         | This is the best answer!
 
@@ -41,14 +41,20 @@
             = f.text_area :body
             = f.submit 'Save'
 
-      .comments
-        ul
-          - answer.comments.each do |comment|
-            li id="comment-#{comment.id}"
-              = comment.body
+      div class="comments-of-Answer-#{answer.id}"
+        p
+          | &nbsp;
+          = 'Comments to answer: '
+          ul
+            - answer.comments.each do |comment|
+              li id="comment-#{comment.id}"
+                = comment.body
         - if user_signed_in?
+          = link_to 'Add comment', '', class: 'add-comment-to-answer', data: { answer_id: answer.id }
           p
-            = form_for([answer, Comment.new], remote:true) do |f|
+            = form_for([answer, Comment.new], remote:true, html: {id: "new-comment-for-answer-#{answer.id}"}) do |f|
+              = f.hidden_field :commentable_id, value: "#{answer.id}"
+              = f.hidden_field :commentable_type, value: "Answer"
               = f.label :body, 'Comment:'
               = f.text_area :body
               = f.submit 'Save'

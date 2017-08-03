@@ -1,2 +1,2 @@
-$('.comments').append('<%= j render @answer %>');
-$('#answer_body').val('')
+$('.comments-of-<%= @comment.commentable_type %>-<%= @comment.commentable_id %> ul').append('<%= j render @comment %>');
+$('#comment_body').val('')
