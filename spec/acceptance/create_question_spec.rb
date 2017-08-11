@@ -32,7 +32,7 @@ feature 'Create question', '
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
-  scenario 'Question appears on another page of user' do
+  scenario 'Question appears on another page of user', js:true do
     Capybara.using_session('user') do
       sign_in(user)
       visit questions_path
@@ -54,6 +54,7 @@ feature 'Create question', '
     end
 
     Capybara.using_session('guest') do
+      save_and_open_page
       expect(page).to have_content question.title
     end
   end

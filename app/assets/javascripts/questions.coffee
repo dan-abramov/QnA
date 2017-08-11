@@ -12,12 +12,12 @@ ready = ->
 
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
-      console.log 'Connected!'
+      console.log 'Connected to questions'
       @perform 'follow'
-    ,
 
     received: (data) ->
-      questionsList.append data
+      question = $.parseJSON(data)
+      questionsList.append(JST["templates/question_action_cable"]({question: question}))
   })
 
 $(document).on('turbolinks:load', ready)

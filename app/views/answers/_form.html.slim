@@ -1,4 +1,4 @@
-= form_for([@question, @answer], remote: true, authenticity_token: true) do |f|
+= form_for([@question, @answer], multipart: true, remote: true, authenticity_token: true) do |f|
   p
     = f.label :body, 'Answer:'
     .answer-errors
@@ -6,8 +6,8 @@
   p Attachments:
   p
   #attachments
-    = f.fields_for :attachments do |attachment|
+    = f.fields_for :attachments, multipart: true, remote: true do |attachment|
       = render 'questions/attachment_fields', f: attachment
     .links
       = link_to_add_association 'add file', f, :attachments
-  p= f.submit 'Create'
+    p= f.submit 'Create'

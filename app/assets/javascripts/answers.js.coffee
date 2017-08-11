@@ -8,7 +8,7 @@ ready = ->
     answer_id = $(this).data('answerId')
     $('form#edit-answer-' + answer_id).show();
 
-  $('.add-comment-to-answer').click (e) ->
+  $('.button-add-comment-to-answer').click (e) ->
     e.preventDefault();
     $(this).hide();
     answer_id = $(this).data('answerId')
@@ -22,11 +22,12 @@ answerAC = ->
   answersList = $('.answers')
   App.cable.subscriptions.create('AnswersChannel', {
     connected: ->
-      console.log('Connected to answer of question: ', gon.question_id)
+      console.log('Connected to answers of question: ', gon.question_id)
       @perform 'follow', id: gon.question_id
 
     received: (data) ->
       answer = $.parseJSON(data)
+      return if gon.current_user_id == answer.user_id
       answersList.append(JST["templates/answer_action_cable"]({answer: answer}))
   })
 

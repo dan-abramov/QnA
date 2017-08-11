@@ -8,7 +8,7 @@
         = link_to 'delete answer', answer_path(answer), remote: true, method: :delete
         | &nbsp;
       - if user_signed_in? && current_user.author_of?(answer.question) && answer.best == false
-        = link_to 'choose as best answer', answer_set_best_path(@answer), remote: true, method: :patch
+        = link_to 'choose as best answer', answer_set_best_path(answer), remote: true, method: :patch
       - if answer.best
         | This is the best answer!
 
@@ -49,10 +49,12 @@
             - answer.comments.each do |comment|
               li id="comment-#{comment.id}"
                 = comment.body
+      div class="answer-comment-errors"
+      div class="add-comment-to-answer"
         - if user_signed_in?
-          = link_to 'Add comment', '', class: 'add-comment-to-answer', data: { answer_id: answer.id }
+          = link_to 'Add comment', '', class: 'button-add-comment-to-answer', data: { answer_id: answer.id }
           p
-            = form_for([answer, Comment.new], remote:true, html: {id: "new-comment-for-answer-#{answer.id}"}) do |f|
+            = form_for([answer, Comment.new], remote: true, html: {id: "new-comment-for-answer-#{answer.id}"}) do |f|
               = f.hidden_field :commentable_id, value: "#{answer.id}"
               = f.hidden_field :commentable_type, value: "Answer"
               = f.label :body, 'Comment:'

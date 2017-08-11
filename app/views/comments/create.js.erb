@@ -1,2 +1,14 @@
-$('.comments-of-<%= @comment.commentable_type %>-<%= @comment.commentable_id %> ul').append('<%= j render @comment %>');
-$('#comment_body').val('')
+<% if @comment.errors.present? %>
+  <% @comment.errors.full_messages.each do |message| %>
+
+    <% if @comment.commentable.class.name == 'Answer' %>
+      $('.answer-comment-errors').html('<%= j message %>');
+    <% else %>
+      $('.question-comment-errors').html('<%= j message %>');
+    <% end %>
+    
+  <% end %>
+<% else %>
+  $('.comments-of-<%= @comment.commentable_type %>-<%= @comment.commentable_id %> ul').append('<%= j render @comment %>');
+  $('#comment_body').val('')
+<% end %>

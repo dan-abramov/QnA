@@ -35,6 +35,8 @@ div class="comments-of-Question-#{@question.id}"
       - @question.comments.each do |comment|
         li id="comment-#{comment.id}"
           = comment.body
+div class='question-comment-errors'
+div class='add-question-comment'
   - if user_signed_in?
     = link_to '', class: 'add-comment-to-question', data: { question_id: @question.id }
       | Add Comment
@@ -44,7 +46,7 @@ div class="comments-of-Question-#{@question.id}"
         = f.hidden_field :commentable_type, value: "Question"
         = f.label :body, 'Comment:'
         = f.text_area :body
-        = f.submit 'Save'
+        = f.submit 'Save', class: 'save-button-for-question-comment'
 
 .answers
  - if @question.answers.any?
