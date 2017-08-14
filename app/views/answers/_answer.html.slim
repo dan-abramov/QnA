@@ -1,12 +1,24 @@
 p
   p= answer.body
-  = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-  | &nbsp;
-  = link_to 'delete answer', question_answer_path(@question, @answer), remote: true, method: :delete
-  | &nbsp;
-  - if current_user.author_of?(@question)
-    = link_to 'choose as best answer', question_answer_set_best_path(@question, @answer), remote: true, method: :patch
+  - if user_signed_in?
+    = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+    | &nbsp;
+    = link_to 'delete answer', answer_path(answer), remote: true, method: :delete
+    | &nbsp;
+    - if current_user.author_of?(answer.question)
+      = link_to 'choose as best answer', answer_set_best_path(answer), remote: true, method: :patch
+
   ul
-    - @answer.attachments.each do |a|
-      li= link_to a.file.filename, a.file.url
-      = link_to 'remove attachment', attachment_path(a), method: :delete
+    - answer.attachments.each do |a|
+      li id="attach-#{a.id}"
+        = link_to a.file.filename, a.file.url
+        = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
+  .rating
+    div class="answer-#{answer.id}-rating"
+      = 'answer rating:'
+      = answer.rating
+  p
+    = form_for [answer], remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
+      = f.label :body, "Answer"
+      = f.text_area :body
+      = f.submit 'Save'

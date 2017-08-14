@@ -10,9 +10,16 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery3
+//= require jquery
 //= require jquery_ujs
+//= require jquery-ui
+//= require jquery.remotipart
+//= require action_cable
 //= require cocoon
 //= require turbolinks
-//= require_tree .
 //= require skim
+//= require_tree .
+
+
+var App = App || {};
+App.cable = ActionCable.createConsumer();

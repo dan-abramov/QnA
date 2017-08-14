@@ -1,0 +1,38 @@
+p= @answer.body
+- if gon.current_user_id == @answer.user_id && gon.user_signed_in
+  a.edit-answer-link data-answer-id=@answer.id href=''
+    | edit
+  | &nbsp;
+  a.link data-method='delete' data-no-turbolink='true' data-remote='true' href= "#{@answer.question_id}/answers/#{@answer.id}" rel='nofollow'
+    | delete answer
+- if gon.current_user_id == @answer.question_user_id && @answer.user_id == gon.current_user_id && gon.user_signed_in
+  a.link data-method='patch' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/set_best" rel='nofollow'
+    | choose as best answer
+ul
+  - if @answer.attachments.length > 0
+    - for attachment in @answer.attachments
+      li id="file-#{attachment.id}"
+        a href=attachment.url#{attachment.file_name}
+          = attachment.file_name
+p
+  - if gon.current_user_id != @answer.user_id && gon.user_signed_in
+    a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_up" rel='nofollow'
+      | +
+  = 'answer rating:'
+  | &nbsp;
+  = @answer.rating
+
+  - if gon.current_user_id != @answer.user_id && gon.user_signed_in
+    a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_down" rel='nofollow'
+      | -
+    | &nbsp;
+    a.link data-method='delete' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_reset" rel='nofollow'
+      | reset
+p
+  - if gon.current_user_id == @answer.user_id && gon.user_signed_in
+    form id="edit-answer-#{@answer.id}" class="edit_answer" action="/questions/#{@answer.question_id}/answers/#{@answer.id}" accept-charset="UTF-8" data-remote="true" method="post"
+      input name="utf8" type="hidden" value="✓"
+      input type="hidden" name="_method" value="patch"
+      label for="answer_body" Answer
+      textarea#answer_body name="answer[body]" #{@answer.body}
+      input type="submit" name="commit" value="Save" data-disable-with="Save"

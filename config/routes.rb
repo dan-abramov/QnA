@@ -14,13 +14,20 @@ Rails.application.routes.draw do
   resources :questions do
     concerns :votable
 
-    resources :answers do
+    resources :comments, shallow:true, only: [:create]
+
+    resources :answers, shallow:true do
       concerns :votable
+
+      resources :comments, shallow:true, only: [:create]
 
       patch :set_best
     end
   end
+
   resources :attachments, only: [:destroy]
   root to: 'questions#index'
+
+  mount ActionCable.server => '/cable'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
