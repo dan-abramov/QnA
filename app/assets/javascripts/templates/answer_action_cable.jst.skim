@@ -13,6 +13,7 @@ ul
     - for attachment in @answer.attachments
       li id="file-#{attachment.id}"
         a href=attachment.url#{attachment.file_name}
+          = attachment.file_name
 p
   - if gon.current_user_id != @answer.user_id && gon.user_signed_in
     a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_up" rel='nofollow'
