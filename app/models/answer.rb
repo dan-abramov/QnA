@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 class Answer < ApplicationRecord
+  include Votable
+  include Commentable
+
   belongs_to :question
   belongs_to :user
+
   has_many :attachments, as: :attachable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
+
   validates :body, presence: true
-  include Votable
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
 

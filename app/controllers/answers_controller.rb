@@ -2,7 +2,8 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_question
+  before_action :load_question, only: %i[create]
+  after_action  :publish_answer, only: %i[create]
 
   include Votabled
 
@@ -24,6 +25,7 @@ class AnswersController < ApplicationController
 
   def set_best
     @answer = Answer.find(params[:answer_id])
+    @question = @answer.question
     if current_user.id == @answer.question.user_id
       @answer.set_best
     else
@@ -32,7 +34,9 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer = @question.answers.find(params[:id])
+    @answer   = Answer.find(params[:id])
+    @question = @answer.question
+
     if @answer.user_id == current_user.id
       @answer.destroy
     else
@@ -48,5 +52,22 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    renderer = ApplicationController.renderer.new
+    renderer.instance_variable_set(:@env, { "HTTP_HOST"=>"localhost:3000",
+                                            "HTTPS"=>"off",
+                                            "REQUEST_METHOD"=>"GET",
+                                            "SCRIPT_NAME"=>"",
+                                            "warden" => warden })
+    ActionCable.server.broadcast(
+    "questions/#{params[:question_id]}",
+      renderer.render(
+        partial: 'answers/answer_json',
+        locals:  { answer: @answer }
+      )
+    )
   end
 end

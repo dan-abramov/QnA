@@ -27,6 +27,27 @@ ul
     | &nbsp;
     = @question.rating
 
+div class="comments-of-Question-#{@question.id}"
+  p
+    | &nbsp;
+    = 'Comments to question: '
+    ul
+      - @question.comments.each do |comment|
+        li id="comment-#{comment.id}"
+          = comment.body
+div class='question-comment-errors'
+div class='add-question-comment'
+  - if user_signed_in?
+    = link_to '', class: 'add-comment-to-question', data: { question_id: @question.id }
+      | Add Comment
+    p
+      = form_for([@question, Comment.new], remote:true, html: {id: "new-comment-for-question-#{@question.id}"}) do |f|
+        = f.hidden_field :commentable_id, value: "#{@question.id}"
+        = f.hidden_field :commentable_type, value: "Question"
+        = f.label :body, 'Comment:'
+        = f.text_area :body
+        = f.submit 'Save', class: 'save-button-for-question-comment'
+
 .answers
  - if @question.answers.any?
   = render 'answers/answers'
