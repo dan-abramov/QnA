@@ -3,12 +3,7 @@ class AttachmentsController < ApplicationController
   before_action :load_attachment
 
   def destroy
-    if current_user.id == @attachment.attachable.user_id
-      @attachment.destroy
-      # head :ok
-    else
-      flash[:notice] = 'You can not delete this attachment'
-    end
+    @attachment.destroy if current_user.id == @attachment.attachable.user_id
   end
 
   private

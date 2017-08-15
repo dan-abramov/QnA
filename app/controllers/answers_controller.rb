@@ -3,51 +3,44 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[create]
+  before_action :load_answer, only: %i[update destroy]
+
   after_action  :publish_answer, only: %i[create]
+
+  respond_to :js
 
   include Votabled
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user_id = current_user.id
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params.merge(user_id: current_user.id)))
   end
 
   def update
-    @answer = Answer.find(params[:id])
-    if current_user.id == @answer.user_id
-      @answer.update(answer_params)
-      @question = @answer.question
-    else
-      flash[:notice] = 'You can not update this answer'
-    end
+    @answer.update(answer_params) if current_user.id == @answer.user_id
   end
 
   def set_best
-    @answer = Answer.find(params[:answer_id])
+    @answer   = Answer.find(params[:answer_id])
     @question = @answer.question
-    if current_user.id == @answer.question.user_id
-      @answer.set_best
-    else
-      flash[:notice] = 'You can not set best answer'
-    end
+    @answer.set_best if current_user.id == @answer.question.user_id
   end
 
   def destroy
-    @answer   = Answer.find(params[:id])
-    @question = @answer.question
-
-    if @answer.user_id == current_user.id
-      @answer.destroy
-    else
-      flash[:notice] = 'You can not delete this answer'
-    end
+    @answer.destroy if @answer.user_id == current_user.id
   end
+
+
+
 
   private
 
   def load_question
     @question = Question.find(params[:question_id])
+  end
+
+  def load_answer
+    @answer = Answer.find(params[:id])
+    @question = @answer.question
   end
 
   def answer_params

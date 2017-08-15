@@ -61,6 +61,8 @@ div class='add-question-comment'
 - if user_signed_in?
  = render 'answers/form'
 
+p= link_to '< to questions', questions_path 
+
 - if user_signed_in?
   p= link_to 'Sign out', destroy_user_session_path,
   data: { method: :delete, confirm: "Are you sure?" }

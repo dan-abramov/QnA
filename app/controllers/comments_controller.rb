@@ -4,21 +4,19 @@ class CommentsController < ApplicationController
 
   after_action  :publish_comment
 
+  respond_to :js
+
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.user_id = current_user.id
-    @comment.save
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user_id: current_user.id)))
   end
 
   private
 
   def load_commentable
-    if params[:comment][:commentable_type] == 'Answer'
-      @commentable = Answer.find(params[:comment][:commentable_id])
-      gon.answer_id = @commentable.id
-    elsif params[:comment][:commentable_type] == 'Question'
-      @commentable = Question.find(params[:comment][:commentable_id])
-    end
+    @commentable = Answer.find(params[:comment][:commentable_id]) if commentable_is_answer
+    gon.answer_id = @commentable.id if commentable_is_answer
+
+    @commentable ||= Question.find(params[:comment][:commentable_id])
   end
 
   def publish_comment
@@ -39,11 +37,12 @@ class CommentsController < ApplicationController
   end
 
   def path_for_broadcasting
-    if @commentable.class.name == 'Answer'
-      "questions/#{@commentable.question_id}/comments"
-    elsif @commentable.class.name == 'Question'
-      "questions/#{@commentable.id}/comments"
-    end
+    path = "questions/#{@commentable.question_id}/comments" if @commentable.class.name == 'Answer'
+    path ||="questions/#{@commentable.id}/comments"
+  end
+
+  def commentable_is_answer
+    params[:comment][:commentable_type] == 'Answer'
   end
 
   def comment_params
