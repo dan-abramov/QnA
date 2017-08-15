@@ -3,67 +3,54 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  before_action :load_answer, only: %i[show]
 
   after_action :publish_question, only: %i[create]
+
+  respond_to :html
 
   include Votabled
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-
     gon.question_id     = @question.id
     gon.user_signed_in  = user_signed_in?
+    gon.current_user_id = current_user.id if user_signed_in?
 
-    if user_signed_in?
-      gon.current_user_id = current_user.id
-    end
+    respond_with @question
   end
 
   def new
-    @question = Question.new
+    respond_with(@question = Question.new)
   end
 
   def edit; end
 
   def create
-    @question = Question.new(question_params)
-    @question.user_id = current_user.id
-
-    if @question.save
-      flash[:notice] = 'Your question successfully created.'
-      redirect_to @question
-    else
-      flash[:notice] = 'Something goes wrong, please, try again.'
-      render :new
-    end
+    respond_with(@question = Question.create(question_params.merge(user_id: current_user.id)))
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to question_path(@question)
-    else
-      render :edit
-    end
+    @question.update(question_params)
+    respond_with @question
   end
 
   def destroy
-    if @question.user_id == current_user.id
-      @question.destroy
-      redirect_to questions_path
-    else
-      flash[:notice] = 'You can not delete this question'
-      redirect_to questions_path
-    end
+    @question.destroy if @question.user_id == current_user.id
+    respond_with @question, location: questions_path
   end
 
   private
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def load_answer
+    @answer = @question.answers.build
   end
 
   def question_params

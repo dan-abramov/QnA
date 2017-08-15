@@ -44,6 +44,7 @@ gem 'remotipart'
 gem 'execjs'
 gem 'skim'
 gem 'gon'
+gem 'responders'
 
 group :test do
   gem 'capybara'
