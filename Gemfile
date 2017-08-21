@@ -48,6 +48,7 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
+gem 'omniauth-twitter'
 
 group :test do
   gem 'capybara'
