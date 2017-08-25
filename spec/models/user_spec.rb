@@ -62,6 +62,17 @@ RSpec.describe User do
           expect(authorization.uid).to eq auth.uid
         end
       end
+
+      context 'user does not exist, and email does not given' do
+        let(:auth) { OmniAuth::AuthHash.new(provider: 'provider', uid: '123456', info: { email: nil }) }
+
+        it 'creates new user' do
+          expect { User.find_for_oauth(auth) }.to change(User, :count).by(1)
+        end
+        it 'returns new user' do
+          expect(User.find_for_oauth(auth)).to be_a(User)
+        end
+      end
     end
   end
 end

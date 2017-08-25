@@ -8,7 +8,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook, :vkontakte, :twitter]
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :vkontakte, :twitter]
 
   def author_of?(object)
     object.user_id == self.id
@@ -23,7 +23,7 @@ class User < ApplicationRecord
       password = Devise.friendly_token[0, 20]
       email    = "#{Devise.friendly_token[0, 5]}@temporary-email.com"
       user     = User.create!(email: email, password: password, password_confirmation: password)
-      user.create_authorization(auth)
+      user.update!(uid: auth.uid.to_s)
     else
 
       user = User.where(email: email).first
