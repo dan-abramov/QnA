@@ -1,0 +1,6 @@
+= form_tag confirm_email_path, method: :post do
+  = label_tag 'Email'
+  = hidden_field_tag 'user_id', user.id
+  = hidden_field_tag 'user', user
+  = email_field 'email',  :email
+  = submit_tag 'Submit'
