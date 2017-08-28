@@ -9,6 +9,8 @@ class QuestionsController < ApplicationController
 
   respond_to :html
 
+  authorize_resource
+
   include Votabled
 
   def index
