@@ -181,7 +181,7 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
         user.reload
         expect(user.email).to eq 'new@email.com'
       end
-
+      
       it 'redirects to root_path' do
         post :confirm_email, params: { user_id: user.id, user: user, email: { email: 'new@email.com' } }
         expect(response).to redirect_to(root_path)

@@ -2,19 +2,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_action :check_auth, except: %i[confirm_email]
 
   def facebook
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
-    if @user.persisted?
-      sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: 'Facebook') if is_navigational_format?
-    end
+    authorization_through('Facebook')
   end
 
   def vkontakte
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
-    if @user.persisted?
-      sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: 'Vkontakte') if is_navigational_format?
-    end
+    authorization_through('Vkontakte')
   end
 
   def twitter
@@ -53,6 +45,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if auth == nil
       redirect_to new_user_session_path
       flash[:notice] = 'Sorry, but we did not get information from your profile. Please, try to sign in later.'
+    end
+  end
+
+  def authorization_through(social_network)
+    @user = User.find_for_oauth(request.env['omniauth.auth'])
+    if @user.persisted?
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :success, kind: social_network) if is_navigational_format?
     end
   end
 end
