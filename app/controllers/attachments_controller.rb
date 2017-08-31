@@ -1,9 +1,10 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_attachment
+  authorize_resource
 
   def destroy
-    @attachment.destroy if current_user.id == @attachment.attachable.user_id
+    @attachment.destroy
   end
 
   private

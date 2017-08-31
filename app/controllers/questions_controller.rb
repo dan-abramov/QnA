@@ -41,8 +41,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy if @question.user_id == current_user.id
-    respond_with @question, location: questions_path
+    respond_with @question.destroy
   end
 
   private

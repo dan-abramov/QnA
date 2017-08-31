@@ -25,11 +25,9 @@ feature 'Create question', '
     expect(page).to have_content question.body
   end
 
-  scenario 'Non-authenticated user ties to create question' do
+  scenario 'Non-authenticated user tries to create question' do
     visit questions_path
-    click_on 'Ask question'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_link 'Ask question'
   end
 
   scenario 'Question appears on another page of user', js:true do
@@ -54,7 +52,6 @@ feature 'Create question', '
     end
 
     Capybara.using_session('guest') do
-      save_and_open_page
       expect(page).to have_content question.title
     end
   end

@@ -2,12 +2,12 @@
   div class="answer-#{answer.id}"
     - if answer.persisted?
       p= answer.body
-      - if user_signed_in? && current_user.author_of?(answer)
+      - if can?(:update, answer) && can?(:destroy, answer)
         = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
         | &nbsp;
         = link_to 'delete answer', answer_path(answer), remote: true, method: :delete
         | &nbsp;
-      - if user_signed_in? && current_user.author_of?(answer.question) && answer.best == false
+      - if can?(:set_best, answer) && answer.best == false
         = link_to 'choose as best answer', answer_set_best_path(answer), remote: true, method: :patch
       - if answer.best
         | This is the best answer!
@@ -19,7 +19,7 @@
             - if user_signed_in? && current_user.author_of?(answer)
               = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
 
-      - if user_signed_in? && !current_user.author_of?(answer)
+      - if can?(:vote_up, answer) && can?(:vote_down, answer) && can?(:vote_reset, answer)
         .rating
           = 'answer rating:'
           div class="answer-#{answer.id}-rating"
@@ -51,7 +51,7 @@
                 = comment.body
       div class="answer-comment-errors"
       div class="add-comment-to-answer"
-        - if user_signed_in?
+        - if can?(:create, Answer)
           = link_to 'Add comment', '', class: 'button-add-comment-to-answer', data: { answer_id: answer.id }
           p
             = form_for([answer, Comment.new], remote: true, html: {id: "new-comment-for-answer-#{answer.id}"}) do |f|

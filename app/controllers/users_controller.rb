@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :load_user
-
+  authorize_resource
+  
   def update_email
     if @user.update(user_params)
       redirect_to root_path

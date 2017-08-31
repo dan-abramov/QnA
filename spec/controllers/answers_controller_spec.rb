@@ -63,7 +63,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #set_best' do
     sign_in_user
 
-    context 'author of question' do
+    context 'user is a author of question' do
       let(:question) { create(:question, user: @user) }
 
       it 'assigns the requested answer to @answer' do
@@ -84,13 +84,13 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'not a author of question' do
-      let(:user2)    { create(:user) }
-      let(:question) { create(:question, user: user2) }
+    context 'user is not a author of question' do
+      let!(:user2)    { create(:user) }
+      let!(:question) { create(:question, user: user2) }
 
-       it 'can not set answer as best' do
+       it 'and can not set answer as best' do
          expect(answer.best).to eq false
-         patch :set_best, params: { answer_id: answer, question_id: question, answer: attributes_for(:answer), user: @user, format: :js }
+         patch :set_best, params: { answer_id: answer, answer: attributes_for(:answer), user: @user, format: :js }
          answer.reload
          expect(answer.best).to eq false
        end

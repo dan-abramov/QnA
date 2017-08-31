@@ -4,10 +4,12 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[create]
   before_action :load_answer, only: %i[update destroy]
-
   after_action  :publish_answer, only: %i[create]
+  authorize_resource
+
 
   respond_to :js
+
 
   include Votabled
 
@@ -16,17 +18,18 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.id == @answer.user_id
+    @answer.update(answer_params)
   end
 
   def set_best
     @answer   = Answer.find(params[:answer_id])
     @question = @answer.question
-    @answer.set_best if current_user.id == @answer.question.user_id
+    authorize! :set_best, @answer
+    @answer.set_best
   end
 
   def destroy
-    @answer.destroy if @answer.user_id == current_user.id
+    @answer.destroy
   end
 
 
