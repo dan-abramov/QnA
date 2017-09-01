@@ -22,19 +22,19 @@ class Ability
     guest_abilities
 
     can :create,     [Question, Answer, Comment]
-    can :update,     [Question, Answer], { user: @user }
-    can :destroy,    [Question, Answer], { user: @user }
+    can :update,     [Question, Answer], { user_id: @user.id }
+    can :destroy,    [Question, Answer], { user_id: @user.id }
 
     can :destroy, Attachment do |attachment|
-      attachment.attachable.user_id == @user.id
+      @user.author_of?(attachment.attachable)
     end
 
     can :set_best, Answer do |answer|
-      answer.question.user_id == @user.id
+      @user.author_of?(answer.question)
     end
 
     can [:vote_up, :vote_down, :vote_reset], [Question, Answer] do |object|
-      object.user_id != @user.id
+      !@user.author_of?(object)
     end
   end
 end
