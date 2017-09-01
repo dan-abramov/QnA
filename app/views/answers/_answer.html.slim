@@ -1,6 +1,6 @@
 p
   p= answer.body
-  - if user_signed_in?
+  - if can?(:update, answer) && can?(:destroy, answer)
     = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
     | &nbsp;
     = link_to 'delete answer', answer_path(answer), remote: true, method: :delete

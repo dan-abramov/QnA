@@ -50,6 +50,8 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #edit' do
     sign_in_user
+    let!(:question) { create(:question, user: @user) }
+
     before { get :edit, params: { id: question } }
 
     it 'assigns the requested question to @question' do
@@ -90,6 +92,8 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     sign_in_user
+    let!(:question) { create(:question, user: @user) }
+
     context 'valid attributes' do
       it 'assigns the requested question to @question' do
         patch :update, params: { id: question, question: attributes_for(:question) }
@@ -146,11 +150,6 @@ RSpec.describe QuestionsController, type: :controller do
       it 'deletes question' do
         expect { delete :destroy, params: { id: question } }
           .to_not change(Question, :count)
-      end
-
-      it 'redirect to index view' do
-        delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
       end
     end
   end

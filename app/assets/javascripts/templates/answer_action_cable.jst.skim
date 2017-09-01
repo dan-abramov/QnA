@@ -16,17 +16,17 @@ ul
           = attachment.file_name
 p
   - if gon.current_user_id != @answer.user_id && gon.user_signed_in
-    a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_up" rel='nofollow'
+    a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "answers/#{@answer.id}/vote_up" rel='nofollow'
       | +
   = 'answer rating:'
   | &nbsp;
   = @answer.rating
 
   - if gon.current_user_id != @answer.user_id && gon.user_signed_in
-    a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_down" rel='nofollow'
+    a.link data-method='post' data-no-turbolink='true' data-remote='true' data-type='json' href= "answers/#{@answer.id}/vote_down" rel='nofollow'
       | -
     | &nbsp;
-    a.link data-method='delete' data-no-turbolink='true' data-remote='true' data-type='json' href= "#{@answer.question_id}/answers/#{@answer.id}/vote_reset" rel='nofollow'
+    a.link data-method='delete' data-no-turbolink='true' data-remote='true' data-type='json' href= "answers/#{@answer.id}/vote_reset" rel='nofollow'
       | reset
 p
   - if gon.current_user_id == @answer.user_id && gon.user_signed_in

@@ -1,0 +1,4 @@
+= form_for(user, url:{ action: 'update_email' }) do |f|
+  p= f.label :email, 'Email'
+  p= f.email_field :email
+  = f.submit 'Confirm'
