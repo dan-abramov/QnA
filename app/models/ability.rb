@@ -36,5 +36,7 @@ class Ability
     can [:vote_up, :vote_down, :vote_reset], [Question, Answer] do |object|
       !@user.author_of?(object)
     end
+
+    can :manage, :profile
   end
 end
