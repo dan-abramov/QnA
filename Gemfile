@@ -50,11 +50,13 @@ gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
 gem 'omniauth-twitter'
 gem 'cancancan'
+gem 'doorkeeper'
 
 group :test do
   gem 'capybara'
   gem 'launchy'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'json_spec'
 end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
