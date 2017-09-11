@@ -1,7 +1,5 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  before_action :load_question, only: %i[show]
-
-  skip_authorization_check #_______________________________________поменять перед отправкой
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -9,12 +7,17 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    respond_with Question.where(id: @question.id)
+    @question = Question.find(params[:id])
+    respond_with @question
+  end
+
+  def create
+    respond_with(@question = Question.create(question_params.merge(user_id: current_resource_owner.id)))
   end
 
   private
 
-  def load_question
-    @question = Question.find(params[:id])
+  def question_params
+    params.require(:question).permit(:title, :body)
   end
 end
