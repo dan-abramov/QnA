@@ -7,7 +7,7 @@ class Api::V1::BaseController < ApplicationController
   end
 
   protected
-  
+
   def current_ability
     @ability ||= Ability.new(current_resource_owner)
   end

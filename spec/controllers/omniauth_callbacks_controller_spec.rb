@@ -2,115 +2,11 @@ require_relative 'controller_helper'
 
 RSpec.describe OmniauthCallbacksController, type: :controller do
   describe 'facebook' do
-    let(:user) { create(:user) }
-
-    before do
-      request.env["devise.mapping"] = Devise.mappings[:user]
-      request.env["omniauth.auth"]  = mock_auth_hash(:facebook)
-    end
-
-    context 'Application did get user-information from server' do
-      before do
-        request.env["omniauth.auth"] = nil
-        get :facebook
-      end
-
-      it 'redirects to new_user_session_path' do
-        expect(response).to redirect_to(new_user_session_path)
-      end
-
-      it 'user did not log in' do
-        expect(controller.current_user).to eq nil
-      end
-    end
-
-    context 'Already registered user trying to sign in through facebook' do
-      before do
-        auth = mock_auth_hash(:facebook)
-        authorization = create(:authorization, provider: auth.provider, uid: auth.uid, user: user )
-        get :facebook
-      end
-
-      it 'user logged in' do
-        expect(controller.current_user).to eq user
-      end
-
-      it 'redirects to root_path' do
-        expect(response).to redirect_to(root_path)
-      end
-    end
-
-    context 'Did not registered user trying to register through facebook' do
-      before do
-        auth = mock_auth_hash(:facebook)
-      end
-
-      it 'redirects to root_path' do
-        get :facebook
-        expect(response).to redirect_to(root_path)
-      end
-
-      it 'user registered' do
-        expect { get :facebook }.to change(User, :count).by(1)
-      end
-    end
+    it_behaves_like 'omniauthable', 'facebook'
   end
 
-
-
   describe 'vkontakte' do
-    let(:user) { create(:user) }
-
-    before do
-      request.env["devise.mapping"] = Devise.mappings[:user]
-      request.env["omniauth.auth"]  = mock_auth_hash(:vkontakte)
-    end
-
-    context 'Application did get user-information from server' do
-      before do
-        request.env["omniauth.auth"] = nil
-        get :vkontakte
-      end
-
-      it 'redirects to new_user_session_path' do
-        expect(response).to redirect_to(new_user_session_path)
-      end
-
-      it 'user did not log in' do
-        expect(controller.current_user).to eq nil
-      end
-    end
-
-    context 'Already registered user trying to sign in through vkontakte' do
-      before do
-        auth = mock_auth_hash(:vkontakte)
-        authorization = create(:authorization, provider: auth.provider, uid: auth.uid, user: user )
-        get :vkontakte
-      end
-
-      it 'user logged in' do
-        expect(controller.current_user).to eq user
-      end
-
-      it 'redirects to root_path' do
-        expect(response).to redirect_to(root_path)
-      end
-    end
-
-    context 'Did not registered user trying to register through vkontakte' do
-      before do
-        auth = mock_auth_hash(:vkontakte)
-      end
-
-      it 'redirects to root_path' do
-        get :vkontakte
-        expect(response).to redirect_to(root_path)
-      end
-
-      it 'user registered' do
-        expect { get :vkontakte }.to change(User, :count).by(1)
-      end
-    end
+    it_behaves_like 'omniauthable', 'vkontakte'
   end
 
   describe 'twitter' do

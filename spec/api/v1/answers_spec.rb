@@ -4,17 +4,7 @@ describe 'Answers API' do
   let!(:question) { create(:question) }
 
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/questions/#{question.id}/answers", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers", params: { access_token: '1234', format: :json }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -22,9 +12,7 @@ describe 'Answers API' do
 
       before { get "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: access_token.token } }
 
-      it 'returns 200 status code' do
-        expect(response).to be_success
-      end
+      it_behaves_like 'successful respond'
 
       it 'returns list of answers' do
         expect(response.body).to have_json_size(2)
@@ -61,9 +49,7 @@ describe 'Answers API' do
 
       before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token , format: :json } }
 
-      it 'returns 200 status code' do
-        expect(response).to be_success
-      end
+      it_behaves_like 'successful respond'
 
       %w(id body created_at updated_at).each do |attr|
         it "answer object contains #{attr}" do
@@ -97,17 +83,7 @@ describe 'Answers API' do
   end
 
   describe 'POST /create' do
-    context 'unathorized' do
-      it 'returns 401 status if there is no access_token' do
-        post "/api/v1/questions/#{question.id}/answers", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        post "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:access_token)   { create(:access_token) }
@@ -122,5 +98,9 @@ describe 'Answers API' do
       end
 
     end
+  end
+
+  def do_request(options = {})
+    get "/api/v1/questions/#{question.id}/answers", params: { format: :json }.merge(options)
   end
 end
