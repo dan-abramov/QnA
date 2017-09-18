@@ -39,6 +39,13 @@ class User < ApplicationRecord
     user
   end
 
+  def self.send_daily_digest
+    all.each do |user|
+
+      DailyMailer.digest(user).deliver_later
+    end
+  end
+
   def create_authorization(auth)
     self.authorizations.create(provider: auth.provider, uid: auth.uid)
   end

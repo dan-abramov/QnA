@@ -4,6 +4,9 @@
 require 'shoulda-matchers'
 require 'active_record'
 require 'action_controller'
+require 'sidekiq/testing'
+
+Sidekiq::Testing.inline!
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
