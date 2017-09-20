@@ -33,6 +33,7 @@ class QuestionsController < ApplicationController
 
   def create
     respond_with(@question = Question.create(question_params.merge(user_id: current_user.id)))
+    Subscription.create(user: current_user, question: @question)
   end
 
   def update

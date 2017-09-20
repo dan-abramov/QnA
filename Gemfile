@@ -57,6 +57,7 @@ gem 'oj_mimic_json'
 gem 'sidekiq', '< 5.0'
 gem 'sinatra', require: nil
 gem 'sidetiq'
+gem 'letter_opener_web'
 
 group :test do
   gem 'capybara'

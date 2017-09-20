@@ -2,6 +2,10 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
@@ -19,7 +23,6 @@ Rails.application.routes.draw do
       delete :vote_reset
     end
   end
-
 
   resources :questions do
     concerns :votable
@@ -45,6 +48,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :subscriptions
 
   resources :attachments, only: [:destroy]
   root to: 'questions#index'

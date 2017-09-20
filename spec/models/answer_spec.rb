@@ -31,4 +31,13 @@ RSpec.describe Answer, type: :model do
       expect(answer.best).to eq false
     end
   end
+
+  describe '.send_new_answer_notification' do
+    let(:answer) { create(:answer) }
+
+    it 'should send email to author of question, when new answer created' do
+      expect(NewAnswerMailer).to receive(:notificate_author_of).with(answer.question).and_call_original
+      Answer.send_new_answer_notification
+    end
+  end
 end

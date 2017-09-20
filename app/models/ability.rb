@@ -38,5 +38,6 @@ class Ability
     end
 
     can :manage, :profile
+    can :manage, Subscription
   end
 end

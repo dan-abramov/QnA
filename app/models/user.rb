@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :answers
   has_many :comments
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -40,8 +41,7 @@ class User < ApplicationRecord
   end
 
   def self.send_daily_digest
-    all.each do |user|
-
+    find_each do |user|
       DailyMailer.digest(user).deliver_later
     end
   end

@@ -48,6 +48,8 @@ div class='add-question-comment'
         = f.text_area :body
         = f.submit 'Save', class: 'save-button-for-question-comment'
 
+= render partial: 'partials/subscription'
+
 .answers
  - if @question.answers.any?
   = render 'answers/answers'
@@ -61,7 +63,7 @@ div class='add-question-comment'
 - if user_signed_in?
  = render 'answers/form'
 
-p= link_to '< to questions', questions_path 
+p= link_to '< to questions', questions_path
 
 - if user_signed_in?
   p= link_to 'Sign out', destroy_user_session_path,
