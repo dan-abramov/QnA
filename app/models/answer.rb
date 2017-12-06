@@ -18,9 +18,9 @@ class Answer < ApplicationRecord
 
   after_create :send_new_answer_notification
 
-  def self.send_new_answer_notification
-    Subscription.all.find_each do |subscriber|
-      NewAnswerMailer.notificate(subscriber).deliver_later if answer.user_id != answer.question.user_id
+  def send_new_answer_notification
+    Subscription.all.find_each do |subscription|
+      QuestionUpdateMailer.notificate(subscription).deliver_later unless subscription.user.author_of?(self)
     end
   end
 

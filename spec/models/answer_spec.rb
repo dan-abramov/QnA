@@ -33,11 +33,17 @@ RSpec.describe Answer, type: :model do
   end
 
   describe '.send_new_answer_notification' do
-    let(:answer) { create(:answer) }
+    let(:answer)       { build(:answer) }
+    let(:subscription) { create(:subscription) }
 
-    it 'should send email to author of question, when new answer created' do
-      expect(NewAnswerMailer).to receive(:notificate_author_of).with(answer.question).and_call_original
-      Answer.send_new_answer_notification
+    it 'is working when asnwer created' do
+      expect(answer).to receive(:send_new_answer_notification)
+      answer.save
+    end
+
+    it 'is calling QuestionUpdateMailer while working' do
+      expect(QuestionUpdateMailer).to receive(:notificate).with(subscription).and_call_original
+      answer.save
     end
   end
 end

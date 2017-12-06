@@ -1,2 +1,2 @@
 div class='unsubscribe'
-  = link_to 'Unsubscribe to the question', subscription_path(@question.subscriptions.where(user_id: current_user.id).first), method: :delete, remote:true
+  = link_to 'Unsubscribe from updates', subscription_path(@question.subscriptions.where(user_id: current_user.id).first), method: :delete, remote:true

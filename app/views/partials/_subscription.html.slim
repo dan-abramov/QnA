@@ -1,8 +1,8 @@
 div class="subscription"
   div class='unsubscribe'
-    - if @question.subscriptions.where(user_id: current_user.id).first
-      = link_to 'Unsubscribe to the question', subscription_path(@question.subscriptions.where(user_id: current_user.id).first), method: :delete, remote: true
+    - if user_signed_in? && @question.subscriptions.where(user_id: current_user.id).first
+      = link_to 'Unsubscribe from updates', subscription_path(@question.subscriptions.where(user_id: current_user.id).first), method: :delete, remote: true
 
   div class='subscribe'
-    - if !@question.subscriptions.where(user_id: current_user.id).first
-      = link_to 'Subscribe to the question', subscriptions_path(subscription: {question_id: @question}), method: :post, remote: true
+    - if user_signed_in? && !@question.subscriptions.where(user_id: current_user.id).first
+      = link_to 'Subscribe to updates', subscriptions_path(subscription: {question_id: @question}), method: :post, remote: true
