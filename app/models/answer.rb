@@ -18,16 +18,17 @@ class Answer < ApplicationRecord
 
   after_create :send_new_answer_notification
 
-  def send_new_answer_notification
-    Subscription.all.find_each do |subscription|
-      QuestionUpdateMailer.notificate(subscription).deliver_later unless subscription.user.author_of?(self)
-    end
-  end
 
   def set_best
     Answer.transaction do
       self.question.answers.update_all(best: false)
       self.update!(best: true)
     end
+  end
+
+  private
+
+  def send_new_answer_notification
+    AnswerNotificationJob.perform_later(self)
   end
 end

@@ -19,6 +19,6 @@ class SubscriptionsController < ApplicationController
   private
 
   def subscription_params
-    params.require(:subscription).permit(:question_id)
+    params.permit(:question_id)
   end
 end

@@ -8,7 +8,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
   describe 'POST #create' do
     it 'creates new subscription' do
-      expect { post :create, params: { subscription: { question_id: question }, format: :js } }.to change(Subscription, :count).by(1)
+      expect { post :create, params: { question_id: question, format: :js } }.to change(Subscription, :count).by(1)
     end
   end
 

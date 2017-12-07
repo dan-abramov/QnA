@@ -6,6 +6,7 @@ class QuestionsController < ApplicationController
   before_action :load_answer, only: %i[show]
 
   after_action :publish_question, only: %i[create]
+  after_action :create_subscription, only: %i[create]
 
   respond_to :html
 
@@ -33,7 +34,6 @@ class QuestionsController < ApplicationController
 
   def create
     respond_with(@question = Question.create(question_params.merge(user_id: current_user.id)))
-    Subscription.create(user: current_user, question: @question)
   end
 
   def update
@@ -46,6 +46,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def create_subscription
+    Subscription.create(user: current_user, question: @question)
+  end
 
   def load_question
     @question = Question.find(params[:id])

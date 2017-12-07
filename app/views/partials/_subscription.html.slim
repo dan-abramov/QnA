@@ -5,4 +5,4 @@ div class="subscription"
 
   div class='subscribe'
     - if user_signed_in? && !@question.subscriptions.where(user_id: current_user.id).first
-      = link_to 'Subscribe to updates', subscriptions_path(subscription: {question_id: @question}), method: :post, remote: true
+      = link_to 'Subscribe to updates', question_subscriptions_path(@question), method: :post, remote: true

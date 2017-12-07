@@ -16,12 +16,4 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
   default_scope { order(created_at: :asc) }
-
-  after_update :update_notification
-
-  def update_notification
-    Subscription.all.find_each do |subscription|
-      QuestionUpdateMailer.notificate(subscription).deliver_later unless subscription.user.author_of?(self)
-    end
-  end
 end

@@ -13,19 +13,4 @@ RSpec.describe Question, type: :model do
   it { should accept_nested_attributes_for :attachments }
 
   it_behaves_like 'votable'
-
-  describe '.update_notification' do
-    let(:question)     { create(:question) }
-    let(:subscription) { create(:subscription) }
-
-    it 'is working when question updated' do
-      expect(question).to receive(:update_notification)
-      question.save
-    end
-
-    it 'is manage to work QuestionUpdateMailer' do
-      expect(QuestionUpdateMailer).to receive(:notificate).with(subscription).and_call_original
-      question.save
-    end
-  end
 end

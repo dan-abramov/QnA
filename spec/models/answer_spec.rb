@@ -33,8 +33,9 @@ RSpec.describe Answer, type: :model do
   end
 
   describe '.send_new_answer_notification' do
-    let(:answer)       { build(:answer) }
-    let(:subscription) { create(:subscription) }
+    let(:question)      { create(:question) }
+    let(:answer)        { build(:answer, question: question) }
+    let!(:subscription) { create(:subscription, question: question) }
 
     it 'is working when asnwer created' do
       expect(answer).to receive(:send_new_answer_notification)
@@ -42,7 +43,7 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'is calling QuestionUpdateMailer while working' do
-      expect(QuestionUpdateMailer).to receive(:notificate).with(subscription).and_call_original
+      expect(AnswerNotificationJob).to receive(:perform_later).with(answer).and_call_original
       answer.save
     end
   end

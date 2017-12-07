@@ -33,8 +33,6 @@ class AnswersController < ApplicationController
   end
 
 
-
-
   private
 
   def load_question

@@ -36,6 +36,8 @@ Rails.application.routes.draw do
 
       patch :set_best
     end
+
+    resources :subscriptions, shallow:true
   end
 
   namespace :api do
@@ -49,7 +51,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :subscriptions
 
   resources :attachments, only: [:destroy]
   root to: 'questions#index'
