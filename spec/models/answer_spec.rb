@@ -31,4 +31,20 @@ RSpec.describe Answer, type: :model do
       expect(answer.best).to eq false
     end
   end
+
+  describe '.send_new_answer_notification' do
+    let(:question)      { create(:question) }
+    let(:answer)        { build(:answer, question: question) }
+    let!(:subscription) { create(:subscription, question: question) }
+
+    it 'is working when asnwer created' do
+      expect(answer).to receive(:send_new_answer_notification)
+      answer.save
+    end
+
+    it 'is calling QuestionUpdateMailer while working' do
+      expect(AnswerNotificationJob).to receive(:perform_later).with(answer).and_call_original
+      answer.save
+    end
+  end
 end

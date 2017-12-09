@@ -1,6 +1,15 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do
@@ -15,7 +24,6 @@ Rails.application.routes.draw do
     end
   end
 
-
   resources :questions do
     concerns :votable
 
@@ -28,6 +36,8 @@ Rails.application.routes.draw do
 
       patch :set_best
     end
+
+    resources :subscriptions, shallow:true
   end
 
   namespace :api do
@@ -40,6 +50,7 @@ Rails.application.routes.draw do
       end
     end
   end
+
 
   resources :attachments, only: [:destroy]
   root to: 'questions#index'

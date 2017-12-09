@@ -16,10 +16,19 @@ class Answer < ApplicationRecord
 
   default_scope { order(best: :desc) }
 
+  after_create :send_new_answer_notification
+
+
   def set_best
     Answer.transaction do
       self.question.answers.update_all(best: false)
       self.update!(best: true)
     end
+  end
+
+  private
+
+  def send_new_answer_notification
+    AnswerNotificationJob.perform_later(self)
   end
 end

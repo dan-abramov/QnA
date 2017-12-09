@@ -6,6 +6,8 @@ RSpec.describe User do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
+  it { should have_many(:subscriptions).dependent(:destroy) }
+
   describe '.find_for_oauth' do
     let!(:user) { create(:user) }
     let(:auth)  { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456') }

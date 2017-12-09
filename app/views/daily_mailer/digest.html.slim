@@ -1,0 +1,4 @@
+h1 Daily#digest
+p = "Привет! Посмотрите, какие вопросы были заданы в течении суток:"
+- @created_questions.each do |question|
+  = link_to question.title, question
