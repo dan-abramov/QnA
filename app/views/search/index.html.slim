@@ -1,0 +1,5 @@
+- @search_result.each do |result|
+  - if result.class == Question
+    h2= 'Вопросы'
+    ul
+      = render partial: 'question', locals: { question: result }

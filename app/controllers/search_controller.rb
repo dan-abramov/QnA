@@ -1,14 +1,14 @@
 class SearchController < ApplicationController
   authorize_resource
+  # respond_to :html
 
   def index
-    @search_result = Question.search(search_params)
-    redirect_to search_index_path
+    respond_with(@search_result = Question.search(search_params))
   end
 
   private
 
   def search_params
-    params.permit(:search)
+    params.require(:search)
   end
 end
