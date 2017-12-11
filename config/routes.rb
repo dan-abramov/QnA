@@ -26,17 +26,12 @@ Rails.application.routes.draw do
 
   resources :questions do
     concerns :votable
-
     resources :comments, shallow:true, only: [:create]
-
     resources :answers, shallow:true do
       concerns :votable
-
       resources :comments, shallow:true, only: [:create]
-
       patch :set_best
     end
-
     resources :subscriptions, shallow:true
   end
 
@@ -51,6 +46,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :search, only: [:index]
 
   resources :attachments, only: [:destroy]
   root to: 'questions#index'

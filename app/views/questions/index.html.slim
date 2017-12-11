@@ -1,3 +1,5 @@
+= render partial: 'partials/search'
+
 h3 class='questions-list'
   - @questions.each do |question|
     = render partial: 'questions/question', locals: {question: question}
