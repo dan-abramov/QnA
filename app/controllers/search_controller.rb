@@ -3,7 +3,8 @@ class SearchController < ApplicationController
   # respond_to :html
 
   def index
-    respond_with(@search_result = Question.search(search_params))
+    @search_result = ThinkingSphinx.search(search_params)
+    respond_with(@search_result)
   end
 
   private
