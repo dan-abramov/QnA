@@ -1,8 +1,3 @@
-- @search_result.each do |result|
-  - if result.class == Question
-    ul
-      = render partial: 'question', locals: { question: result }
-
-  - if result.class == Answer
-    ul
-      = render partial: 'answer', locals: { answer: result }
+ul
+  - @search_result.each do |result|
+    = render partial: "#{result.class.to_s.downcase}", locals: { result: result }

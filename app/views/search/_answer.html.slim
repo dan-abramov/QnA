@@ -1,2 +1,4 @@
 li
-  = link_to answer.body, answer_path(answer)
+  | Answer
+  '
+  = link_to result.body, question_path(result.question)
