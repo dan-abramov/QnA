@@ -3,17 +3,16 @@ class SearchController < ApplicationController
   # respond_to :html
 
   def index
-    @search_result = Search.find(where_to_search, what_to_search)
-    respond_with(@search_result)
+    respond_with(@search_result = Search.find(klass, content))
   end
 
   private
 
-  def where_to_search
+  def klass
     params.require(:condition)
   end
 
-  def what_to_search
+  def content
     params.require(:search)
   end
 end
