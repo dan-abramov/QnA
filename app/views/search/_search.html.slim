@@ -1,0 +1,8 @@
+= form_tag search_index_path, method: :get do
+  = text_area :search, params[:search]
+  p
+    = label_tag 'Search in'
+    '
+    = select_tag :condition,
+      options_for_select(['Everywhere', 'Questions', 'Answers', 'Comments', 'Users'])
+  = submit_tag 'Search'

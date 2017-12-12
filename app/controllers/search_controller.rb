@@ -3,13 +3,17 @@ class SearchController < ApplicationController
   # respond_to :html
 
   def index
-    @search_result = ThinkingSphinx.search(search_params)
+    @search_result = Search.find(where_to_search, what_to_search)
     respond_with(@search_result)
   end
 
   private
 
-  def search_params
+  def where_to_search
+    params.require(:condition)
+  end
+
+  def what_to_search
     params.require(:search)
   end
 end
