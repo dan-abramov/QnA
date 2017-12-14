@@ -6,18 +6,18 @@ feature 'Searching','
   Necessary information
 ' do
 
-  given!(:question)  { create(:question, body: 'Hello everybody') }
-  given!(:answer)    { create(:answer, question: question, body: 'Hello!') }
-  given!(:comment)   { create(:comment, commentable: question, body: 'Hey!') }
+  given!(:question)  { create(:question, body: 'test') }
+  given!(:answer)    { create(:answer, question: question, body: 'test') }
+  given!(:comment)   { create(:comment, commentable: question, body: 'test') }
+  given!(:user)      { create(:user, email: 'test@test.com') }
 
-  scenario 'Try to find everywhere' do
+  scenario 'Try to find Everywhere', js: true do
     ThinkingSphinx::Test.run do
       visit root_path
 
       within('#new_search') do
         expect(page).to have_button 'Search'
-        fill_in 'search', with: 'Hello'
-        select 'Everywhere', from: 'condition'
+        fill_in 'search', with: 'test'
         click_on 'Search'
       end
 
@@ -30,23 +30,28 @@ feature 'Searching','
 
       expect(page).to have_content('Comment')
       expect(page).to have_link(comment.body)
+
+      expect(page).to have_content('User')
+      expect(page).to have_link(user.email)
     end
   end
 
   ['Questions', 'Answers', 'Comments', 'Users'].each do |klass|
-    scenario "Try to find in #{klass}" do
-      visit root_path
+    scenario "Try to find in #{klass}", js: true do
+      ThinkingSphinx::Test.run do
+        visit root_path
 
-      within('#new_search') do
-        expect(page).to have_button 'Search'
-        fill_in 'search', with: 'Hello'
-        select klass, from: 'condition'
+        within('#new_search') do
+          expect(page).to have_button 'Search'
+          fill_in 'search', with: 'test'
+          select klass, from: 'condition'
+          click_on 'Search'
+        end
+
         save_and_open_page
-        click_on 'Search'
+        expect(current_path).to eq search_index_path
+        expect(page).to have_content(klass.chop)
       end
-
-      expect(current_path).to eq search_index_path
-      expect(page).to have_content(klass.chop)
     end
   end
 end
