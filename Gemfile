@@ -60,6 +60,9 @@ gem 'sidetiq'
 gem 'letter_opener_web'
 gem 'whenever'
 
+gem 'mysql2'
+gem 'thinking-sphinx'
+
 group :test do
   gem 'capybara'
   gem 'launchy'

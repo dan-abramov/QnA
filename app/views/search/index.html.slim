@@ -1,0 +1,3 @@
+ul
+  - @search_result.each do |result|
+    = render partial: "#{result.class.to_s.downcase}", locals: { result: result }
