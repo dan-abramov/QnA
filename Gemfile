@@ -63,6 +63,9 @@ gem 'whenever'
 gem 'mysql2'
 gem 'thinking-sphinx'
 
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
 group :test do
   gem 'capybara'
   gem 'launchy'
