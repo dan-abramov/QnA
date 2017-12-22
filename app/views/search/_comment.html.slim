@@ -1,7 +1,9 @@
 li
   | Comment
   '
+  br
   - if result.commentable_type == 'Question'
     = link_to result.body, question_path(result.commentable)
   - else
     = link_to result.body, question_path(result.commentable.question)
+  p

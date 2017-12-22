@@ -1,4 +1,8 @@
 li
   | Question
   '
+  br
   = link_to result.title, question_path(result)
+  br
+  = result.body
+  p
