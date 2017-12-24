@@ -1,16 +1,17 @@
-h3
-  = @question.title
-  <br>
-h4
-  = @question.body
-  <br>
-p Attachment:
-ul
-  - @question.attachments.each do |a|
-    li id="attach-#{a.id}"
-      = link_to a.file.filename, a.file.url
-      - if user_signed_in? && current_user.author_of?(@question)
-        = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
+- cache @question do
+  h3
+    = @question.title
+    <br>
+  h4
+    = @question.body
+    <br>
+  p Attachment:
+  ul
+    - @question.attachments.each do |a|
+      li id="attach-#{a.id}"
+        = link_to a.file.filename, a.file.url
+        - if user_signed_in? && current_user.author_of?(@question)
+          = link_to 'remove attachment', attachment_path(a), method: :delete, remote: true
 
 - if user_signed_in? && !current_user.author_of?(@question)
   .rating
@@ -27,15 +28,10 @@ ul
     | &nbsp;
     = @question.rating
 
-div class="comments-of-Question-#{@question.id}"
-  p
-    | &nbsp;
-    = 'Comments to question: '
-    ul
-      - @question.comments.each do |comment|
-        li id="comment-#{comment.id}"
-          = comment.body
+= render partial: 'partials/comments', locals: { commentable: @question }
+
 div class='question-comment-errors'
+
 div class='add-question-comment'
   - if user_signed_in?
     = link_to '', class: 'add-comment-to-question', data: { question_id: @question.id }
@@ -48,20 +44,20 @@ div class='add-question-comment'
         = f.text_area :body
         = f.submit 'Save', class: 'save-button-for-question-comment'
 
-= render partial: 'partials/subscription'
+  = render partial: 'partials/subscription'
 
-.answers
- - if @question.answers.any?
-  = render 'answers/answers'
-    .answers-errors
- - else
-  .no-answers
-    = '(Here is no answers)'
+  .answers
+   - if @question.answers.any?
+    = render 'answers/answers'
+      .answers-errors
+   - else
+    .no-answers
+      = '(Here is no answers)'
 
 
 
-- if user_signed_in?
- = render 'answers/form'
+  - if user_signed_in?
+   = render 'answers/form'
 
 p= link_to '< to questions', questions_path
 

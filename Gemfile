@@ -69,6 +69,8 @@ gem 'therubyracer'
 
 gem 'unicorn'
 
+gem 'redis-rails'
+
 group :test do
   gem 'capybara'
   gem 'launchy'
