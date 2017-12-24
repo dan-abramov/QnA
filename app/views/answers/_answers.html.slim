@@ -1,7 +1,9 @@
 - @question.answers.each do |answer|
   div class="answer-#{answer.id}"
     - if answer.persisted?
-      p= answer.body
+      - cache answer do
+        p= answer.body
+
       - if can?(:update, answer) && can?(:destroy, answer)
         = link_to 'edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
         | &nbsp;
@@ -28,28 +30,23 @@
             = link_to '-', vote_down_answer_path(answer), remote: true, data: { type: :json }, method: :post
             | &nbsp;
             = link_to 'reset', vote_reset_answer_path(answer), remote: true, data: { type: :json }, method: :delete
-      - if !user_signed_in? || current_user.author_of?(answer)
-        .rating
-          div class="answer-#{answer.id}-rating"
-            = 'answer rating:'
-            | &nbsp;
-            = answer.rating
+        - if !user_signed_in? || current_user.author_of?(answer)
+          .rating
+            div class="answer-#{answer.id}-rating"
+              = 'answer rating:'
+              | &nbsp;
+              = answer.rating
 
-        p
-          = form_for [answer], remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
-            = f.label :body, "Answer"
-            = f.text_area :body
-            = f.submit 'Save'
+          p
+            = form_for [answer], remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
+              = f.label :body, "Answer"
+              = f.text_area :body
+              = f.submit 'Save'
 
-      div class="comments-of-Answer-#{answer.id}"
-        p
-          | &nbsp;
-          = 'Comments to answer: '
-          ul
-            - answer.comments.each do |comment|
-              li id="comment-#{comment.id}"
-                = comment.body
-      div class="answer-comment-errors"
+        = render partial: 'partials/comments', locals: { commentable: answer } 
+
+        div class="answer-comment-errors"
+
       div class="add-comment-to-answer"
         - if can?(:create, Answer)
           = link_to 'Add comment', '', class: 'button-add-comment-to-answer', data: { answer_id: answer.id }

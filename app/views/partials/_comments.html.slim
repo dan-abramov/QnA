@@ -1,0 +1,12 @@
+div class="comments-of-#{commentable.class}-#{commentable.id}"
+  p
+    | &nbsp;
+    - if commentable.respond_to?(:question_id)
+      = "Comments to answer: "
+    - else
+      = "Comments to question: "
+    ul
+      - commentable.comments.each do |comment|
+        - cache comment do
+          li id="comment-#{comment.id}"
+            = comment.body
